@@ -96,7 +96,6 @@ P_SZ
 p_vector_default_space_fn( p_Vector* self,
         P_SZ len )
 {
-    P_UNUSED( self );
     return len * 2 * self->unit;
 }
 
