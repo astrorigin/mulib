@@ -119,10 +119,10 @@ p_vector_set( p_Vector* v,
     P_PTR dest;
 
     P_ASSERT( v )
-    P_TRACE( "-- VECTOR -- set ("P_PTR_FMT") index ("P_PTR_FMT")"
+    P_TRACE( "-- VECTOR -- set ("P_PTR_FMT") index ("P_ID_FMT")"
              " ptr ("P_PTR_FMT")\n", v, index, ptr )
 
-    if ( index > v->len || ptr == NULL )
+    if ( index >= v->len || ptr == NULL )
         return NULL;
     dest = v->data + ( index * v->unit );
     if ( dest == ptr )
