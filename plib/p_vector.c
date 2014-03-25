@@ -97,18 +97,18 @@ p_vector_default_space_fn( p_Vector* self,
         P_SZ len )
 {
     P_UNUSED( self );
-    return len * 2;
+    return len * 2 * self->unit;
 }
 
 #ifndef NDEBUG
 P_PTR
 p_vector_get( const p_Vector* v,
-        const P_ID index )
+        const P_SZ index )
 {
     P_ASSERT( v )
     P_TRACE( "-- VECTOR -- get ("P_PTR_FMT") index ("P_PTR_FMT")\n", v, index );
 
-    return index > v->len ? NULL : v->data + ( index * v->unit );
+    return index >= v->len ? NULL : v->data + ( index * v->unit );
 }
 #endif /* NDEBUG */
 

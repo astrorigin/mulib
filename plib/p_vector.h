@@ -104,11 +104,11 @@ p_vector_default_space_fn( p_Vector* self,
  */
 P_EXPORT P_PTR
 p_vector_get( const p_Vector* v,
-        const P_ID index );
+        const P_SZ index );
 #else /* release mode */
 
 #define p_vector_get( v, idx ) \
-        ( (idx) > (v)->len ? (P_PTR)0 : (v)->data + ( (idx) * (v)->unit ))
+        ( (idx) >= (v)->len ? (P_PTR)0 : (v)->data + ( (idx) * (v)->unit ))
 #endif /* NDEBUG */
 
 /**
