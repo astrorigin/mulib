@@ -32,7 +32,7 @@ p_string_new_len( p_String** s,
         const P_CHAR* content,
         const P_SZ len )
 {
-    P_ASSERT( *s )
+    P_ASSERT( s )
 
     p_vector_new( (p_Vector**)s, len + 1, sizeof( P_CHAR ),
                   (P_SZ(*)(p_Vector*, P_SZ)) &p_string_calc_space_fn );
