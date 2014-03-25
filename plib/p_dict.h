@@ -107,10 +107,22 @@ p_dict_set( p_Dict* d,
 
 /**
  *  \brief Apply a function to each value in the dict.
+ *  \param d The dict.
+ *  \param traverse_fn The function to apply.
  */
 P_EXPORT P_VOID
 p_dict_traverse( p_Dict* d,
-        P_VOID (*func)( P_PTR, P_PTR ),
+        P_VOID (*traverse_fn)( P_PTR ) );
+
+/**
+ *  \brief Apply a function to each value in the dict (2 parameters version).
+ *  \param d The dict.
+ *  \param traverse_fn The function to apply.
+ *  \param userdata Data passed to traverse_fn.
+ */
+P_EXPORT P_VOID
+p_dict_traverse2( p_Dict* d,
+        P_VOID (*traverse_fn)( P_PTR, P_PTR ),
         P_PTR userdata );
 
 /**

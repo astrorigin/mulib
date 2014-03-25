@@ -58,10 +58,10 @@ p_dict_hash( const P_PTR k,
         h += p[i];
         h += ( h << 10 );
         h ^= ( h >> 6 );
-    } 
+    }
     h += ( h << 3 );
     h ^= ( h >> 11 );
-    h += ( h << 15 ); 
+    h += ( h << 15 );
     return h;
 }
 
@@ -127,13 +127,32 @@ p_dict_set( p_Dict* d,
 
 P_VOID
 p_dict_traverse( p_Dict* d,
+        P_VOID (*func)( P_PTR ) )
+{
+    p_BTNode* nd;
+    p_DictNode* n;
+    P_ASSERT( d )
+
+    nd = p_btree_least( (p_BTree*)d );
+    for ( ; nd; nd = p_btree_next( nd ))
+    {
+        n = (p_DictNode*) nd->val;
+        for ( ; n; n = n->next )
+        {
+            (*func)( n->val );
+        }
+    }
+}
+
+P_VOID
+p_dict_traverse2( p_Dict* d,
         P_VOID (*func)( P_PTR, P_PTR ),
         P_PTR userdata )
 {
     p_BTNode* nd;
     p_DictNode* n;
     P_ASSERT( d )
-    
+
     nd = p_btree_least( (p_BTree*)d );
     for ( ; nd; nd = p_btree_next( nd ))
     {
@@ -170,7 +189,7 @@ p_dict_node_list_delete( p_DictNode* nd,
         P_PTR userdata )
 {
     p_DictNode* next;
-    P_ASSERT( nd )    
+    P_ASSERT( nd )
     while ( nd )
     {
         next = nd->next;
@@ -207,7 +226,7 @@ p_dict_debug( const p_Dict* d )
     p_DictNode* dn;
 
     P_ASSERT( d );
-    
+
     printf( "-- DICT -- debug ("P_PTR_FMT"):\n", d );
 
     btn = p_btree_least( (p_BTree*)d );

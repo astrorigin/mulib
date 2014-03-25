@@ -180,6 +180,19 @@ p_vector_append( p_Vector* v,
 
 P_VOID
 p_vector_traverse( p_Vector* v,
+        P_VOID (*traverse_fn)( P_PTR ) )
+{
+    P_SZ i;
+    const P_SZ vlen = v->len;
+
+    for ( i = 0; i < vlen; ++i )
+    {
+        (*traverse_fn)( v->data + ( i * v->unit ));
+    }
+}
+
+P_VOID
+p_vector_traverse2( p_Vector* v,
         P_VOID (*traverse_fn)( P_PTR, P_PTR ),
         P_PTR userdata )
 {

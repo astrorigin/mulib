@@ -146,10 +146,19 @@ p_vector_append( p_Vector* v,
  *  \brief Apply a function to each member of the vector.
  *  \param v The vector.
  *  \param traverse_fn The function to apply.
- *  \param userdata Data passed to traverse_fn.
  */
 P_EXPORT P_VOID
 p_vector_traverse( p_Vector* v,
+        P_VOID (*traverse_fn)( P_PTR ) );
+
+/**
+ *  \brief Apply a function to each member of the vector (2 parameters version).
+ *  \param v The vector.
+ *  \param traverse_fn The function to apply.
+ *  \param userdata Data passed to traverse_fn.
+ */
+P_EXPORT P_VOID
+p_vector_traverse2( p_Vector* v,
         P_VOID (*traverse_fn)( P_PTR, P_PTR ),
         P_PTR userdata );
 
