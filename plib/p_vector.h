@@ -81,7 +81,7 @@ P_EXPORT P_VOID
 p_vector_delete( p_Vector** vec );
 
 /**
- *
+ *  \brief Default memory strategy.
  */
 P_EXPORT P_SZ
 p_vector_default_space_fn( p_Vector* self,
@@ -100,6 +100,8 @@ p_vector_default_space_fn( p_Vector* self,
 #ifndef NDEBUG
 /**
  *  \brief Get an element in the vector.
+ *  \param v The vector.
+ *  \param index Index of element.
  *  \return NULL if index is out of range, else address of element.
  */
 P_EXPORT P_PTR
@@ -113,7 +115,10 @@ p_vector_get( const p_Vector* v,
 
 /**
  *  \brief Set an element in the vector.
- *  \return NULL if index is out of range or value was NULL; else the indexed address.
+ *  \param v The vector.
+ *  \param index Index of element.
+ *  \param value Data to copy.
+ *  \return NULL if index is out of range or value was NULL; else the indexed value.
  */
 P_EXPORT P_PTR
 p_vector_set( p_Vector* v,
@@ -122,6 +127,8 @@ p_vector_set( p_Vector* v,
 
 /**
  *  \brief Reserve space for elements.
+ *  \param v The vector.
+ *  \param len Number of elements to accept.
  *  \return Address of new allocated memory.
  */
 P_EXPORT P_PTR
@@ -130,6 +137,9 @@ p_vector_reserve( p_Vector* v,
 
 /**
  *  \brief Append some data to the vector.
+ *  \param v The vector.
+ *  \param ptr The data.
+ *  \param len Length of data (multiple of v->unit).
  */
 P_EXPORT P_VOID
 p_vector_append( p_Vector* v,
