@@ -165,15 +165,19 @@ p_vector_append( p_Vector* v,
         const P_PTR ptr,
         const P_SZ len )
 {
+    P_SZ num;
+
     P_ASSERT( v )
     P_ASSERT( ptr )
     P_TRACE( "-- VECTOR -- append ("P_PTR_FMT")\n", v )
 
     if ( len == 0 )
         return;
-    p_vector_reserve( v, v->len + len );
+    num = len / v->unit;
+    P_ASSERT( num != 0 && len % v->unit == 0 )
+    p_vector_reserve( v, v->len + num );
     memcpy( v->data + ( v->len * v->unit ), ptr, len );
-    v->len += len;
+    v->len += num;
     P_ASSERT( v->len * v->unit <= v->capacity )
 }
 
