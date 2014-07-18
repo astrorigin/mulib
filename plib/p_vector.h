@@ -46,7 +46,7 @@ struct _p_vector_t
     P_SZ    len;        /* total of elements */
     P_SZ    unit;       /* size of one element */
     P_SZ    capacity;   /* size of data buffer */
-    /* return requested size of data buffer */
+    /* return requested size of data buffer (can be NULL) */
     P_SZ    (*calc_space_fn)( p_Vector* self, P_SZ len );
 };
 
@@ -91,11 +91,11 @@ p_vector_default_space_fn( p_Vector* self,
  *  \brief Fill a vector up.
  *  \param v The vector.
  *  \param p Pointer to data.
- *  \param sz Length to copy.
+ *  \param sz Number of elements to copy.
  *  \note Dont overflow (check capacity).
  */
 #define p_vector_fill( v, p, sz ) \
-        do { memcpy( (v)->data, (p), (sz) ); (v)->len = (sz); } while (0)
+        do { memcpy( (v)->data, (p), (sz) * (v)->unit ); (v)->len = (sz); } while (0)
 
 #ifndef NDEBUG
 /**
@@ -139,7 +139,7 @@ p_vector_reserve( p_Vector* v,
  *  \brief Append some data to the vector.
  *  \param v The vector.
  *  \param ptr The data.
- *  \param len Length of data (multiple of v->unit).
+ *  \param len Number of elements to append.
  */
 P_EXPORT P_VOID
 p_vector_append( p_Vector* v,

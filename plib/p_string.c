@@ -39,6 +39,7 @@ p_string_new_len( p_String** s,
     if ( content )
         strncpy( (*s)->data, content, len );
     ((char*)(*s)->data)[ len ] = '\0';
+    (*s)->len = 1;
 }
 
 P_VOID
@@ -53,6 +54,7 @@ p_string_init_len( p_String* s,
     if ( content )
         strncpy( s->data, content, len );
     ((char*)s->data)[ len ] = '\0';
+    s->len = 1;
 }
 
 P_SZ
@@ -181,6 +183,7 @@ p_string_replace( p_String* s,
     }
     else
     {
+        P_CHAR* buf;
         P_SZ cap_req;
         do
         {
@@ -191,7 +194,7 @@ p_string_replace( p_String* s,
         while ( p );
         sz = s->len + (( len2 - len1 ) * cnt );
         cap_req = s->calc_space_fn ? (*s->calc_space_fn)( s, sz ) : sz; 
-        b = P_MALLOC( cap_req );
+        buf = b = P_MALLOC( cap_req );
         d = p = s->data;
         p = strstr( p, this );
         do
@@ -210,7 +213,7 @@ p_string_replace( p_String* s,
         *b = '\0';
         /* switch data */
         p = s->data;
-        s->data = b;
+        s->data = buf;
         P_FREE( p, s->capacity );
         s->len += cnt * ( len2 - len1 );
         s->capacity = cap_req;
@@ -231,7 +234,6 @@ p_string_test( P_VOID )
 
     p_String s;
     p_string_init( &s , "" );
-    /*p_string_debug( &s );*/
     P_ASSERT( s.len == 1 );
 
     p_string_set( &s, "abcdefgabcdefg" );
@@ -258,6 +260,7 @@ p_string_test( P_VOID )
 #ifndef P_NO_MEMPOOL
     p_mempool_debug( &mp );
     p_mempool_fini( &mp );
+    p_mempool_debug( &mp );
 #endif
     return 0;
 }

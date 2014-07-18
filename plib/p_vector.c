@@ -66,12 +66,11 @@ p_vector_init( p_Vector* v,
     v->capacity = 0;
     v->calc_space_fn = csfn;
 
-    space_req = csfn ? (*csfn)( v, len ) : len;
+    space_req = csfn ? (*csfn)( v, len ) : len * unit;
     if ( space_req )
     {
         v->data = P_MALLOC( space_req );
         P_ASSERT( v->data )
-        v->len = len;
         v->capacity = space_req;
     }
     P_ASSERT( space_req > 0 || len == 0 );
@@ -149,7 +148,7 @@ p_vector_reserve( p_Vector* v,
     P_ASSERT( v )
     P_TRACE( "-- VECTOR -- reserve ("P_PTR_FMT")\n", v )
 
-    req = v->calc_space_fn ? (*v->calc_space_fn)( v, len ) : len;
+    req = v->calc_space_fn ? (*v->calc_space_fn)( v, len ) : len * v->unit;
     if ( v->capacity != req )
     {
         v->data = P_REALLOC( v->data, req, v->capacity );
@@ -165,19 +164,15 @@ p_vector_append( p_Vector* v,
         const P_PTR ptr,
         const P_SZ len )
 {
-    P_SZ num;
-
     P_ASSERT( v )
     P_ASSERT( ptr )
     P_TRACE( "-- VECTOR -- append ("P_PTR_FMT")\n", v )
 
     if ( len == 0 )
         return;
-    num = len / v->unit;
-    P_ASSERT( num != 0 && len % v->unit == 0 )
-    p_vector_reserve( v, v->len + num );
-    memcpy( v->data + ( v->len * v->unit ), ptr, len );
-    v->len += num;
+    p_vector_reserve( v, v->len + len );
+    memcpy( v->data + ( v->len * v->unit ), ptr, len * v->unit );
+    v->len += len;
     P_ASSERT( v->len * v->unit <= v->capacity )
 }
 
@@ -257,9 +252,11 @@ p_vector_test( P_VOID )
     p_mempool_init( &mp, 0 );
     
     p_vector_init( &vec, 3, sizeof( struct p_vector_test_t ), &p_vector_test_csfn );
+    P_ASSERT( vec.len == 0 )
     P_ASSERT( vec.capacity == 3 * sizeof( struct p_vector_test_t ) * 2 )
     
-    p_vector_fill( &vec, data, sizeof( struct p_vector_test_t ) * 3 );
+    p_vector_fill( &vec, data, 3 );
+    P_ASSERT( vec.len == 3 )
     p_vector_debug( &vec );
     
     for ( i = 0; i < 3; i++ )

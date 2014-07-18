@@ -48,7 +48,7 @@ typedef p_Vector p_String;
 /**
  *  \brief Allocate for a new string.
  *  \param s The string.
- *  \param content Data to copy (or NULL).
+ *  \param content String to copy (or NULL).
  */
 #define p_string_new( s, content ) \
         p_string_new_len( s, content, strlen( (const char*)content ))
@@ -56,8 +56,8 @@ typedef p_Vector p_String;
 /**
  *  \brief Allocate for a new string with length.
  *  \param s The string.
- *  \param content Data to copy (or NULL).
- *  \param len Length of data.
+ *  \param content String to copy (or NULL).
+ *  \param len Length of string.
  */
 P_EXPORT P_VOID
 p_string_new_len( p_String** s,
@@ -73,7 +73,7 @@ p_string_new_len( p_String** s,
 /**
  *  \brief Initialize a string.
  *  \param s The string.
- *  \param content Data to copy (or NULL).
+ *  \param content String to copy (or NULL).
  */
 #define p_string_init( s, content ) \
         p_string_init_len( s, content, strlen( (const char*)content ))
@@ -81,8 +81,8 @@ p_string_new_len( p_String** s,
 /**
  *  \brief Initialize a string with length.
  *  \param s The string.
- *  \param content Data to copy (or NULL).
- *  \param len Length of data.
+ *  \param content String to copy (or NULL).
+ *  \param len Length of string.
  */
 P_EXPORT P_VOID
 p_string_init_len( p_String* s,
@@ -117,7 +117,7 @@ p_string_calc_space_fn( p_String*,
 /**
  *  \brief Set string content.
  *  \param s The string.
- *  \param content Data to copy (or NULL).
+ *  \param content String to copy (or NULL).
  *  \return Start of the string.
  */
 #define p_string_set( s, content ) \
@@ -126,8 +126,8 @@ p_string_calc_space_fn( p_String*,
 /**
  *  \brief Set string content with length.
  *  \param s The string.
- *  \param content Data to copy (or NULL).
- *  \param len Length of data.
+ *  \param content String to copy (or NULL).
+ *  \param len Length of string to copy.
  *  \return Start of the string.
  */
 P_EXPORT P_CHAR*
@@ -139,12 +139,12 @@ p_string_set_len( p_String* s,
  *  \brief Copy a string.
  */
 #define p_string_copy( s1, s2 ) \
-        p_string_set_len( (s1), (const P_CHAR*)(s2)->data, (s2)->len )
+        p_string_set_len( (s1), (const P_CHAR*)(s2)->data, (s2)->len -1 )
 
 /**
  *  \brief Append data to a string.
  *  \param s The string.
- *  \param content Data to append (or NULL).
+ *  \param content String to append (or NULL).
  *  \return Start of string.
  */
 P_EXPORT P_CHAR*
@@ -154,8 +154,8 @@ p_string_cat( p_String* s,
 /**
  *  \brief Append data to a string (with length).
  *  \param s The string.
- *  \param content Data to append (or NULL).
- *  \param len Length of data.
+ *  \param content String to append (or NULL).
+ *  \param len Length of string to append.
  *  \return Start of string.
  */
 P_EXPORT P_CHAR*
