@@ -3,7 +3,7 @@
 cmake_minimum_required( VERSION 2.8 )
 project( plib )
 
-add_definitions( -ansi -Wall -Wall -Wextra -Werror )
+add_definitions( -ansi -Wall -Wextra -Werror )
 
 include_directories( BEFORE . )
 
