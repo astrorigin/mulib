@@ -88,6 +88,9 @@ p_dict_hash( const P_PTR k,
 
 /**
  *  \brief Get an elem from the dict or NULL.
+ *  \param d The dict.
+ *  \param key The key string.
+ *  \return Element found, or NULL if nothing found (or key is invalid). 
  */
 P_EXPORT P_PTR
 p_dict_get( const p_Dict* d,
@@ -98,9 +101,10 @@ p_dict_get( const p_Dict* d,
  *  \param d The dict.
  *  \param key The key string.
  *  \param val The pointer value.
- *  \return The resulting node, or NULL if key is invalid.
+ *  \return The pointer value if a new element was inserted,
+ *  or the pointer that was replaced, or NULL if key is invalid.
  */
-P_EXPORT p_DictNode*
+P_EXPORT P_PTR
 p_dict_set( p_Dict* d,
         const P_CHAR* key,
         const P_PTR val );

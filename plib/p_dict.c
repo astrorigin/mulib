@@ -85,7 +85,7 @@ p_dict_get( const p_Dict* d,
     return NULL;
 }
 
-p_DictNode*
+P_PTR
 p_dict_set( p_Dict* d,
         const P_CHAR* key,
         const P_PTR val )
@@ -102,7 +102,7 @@ p_dict_set( p_Dict* d,
     {
         p_dict_node_new( &nd, key, val );
         p_btree_insert( (p_BTree*)d, k, nd );
-        return nd;
+        return (P_PTR) val;
     }
     else
     {
@@ -118,10 +118,14 @@ p_dict_set( p_Dict* d,
             P_ASSERT( last )
             p_dict_node_new( &nd, key, val );
             last->next = nd;
-            return nd;
+            return (P_PTR) val;
         }
-        nd->val = (P_PTR) val;
-        return nd;
+        else
+        {
+            P_PTR old = nd->val;
+            nd->val = (P_PTR) val;
+            return old;
+        }
     }
 }
 
@@ -255,10 +259,14 @@ p_dict_test( P_VOID )
 
     p_dict_init( &d );
 
-    p_dict_set( &d, "test", (P_PTR)0xdeadbeef );
-    p_dict_set( &d, "moo", (P_PTR)0x12345678 );
+    P_ASSERT( p_dict_set( &d, "test", (P_PTR)0xdeadbeef ) == (P_PTR)0xdeadbeef );
+    P_ASSERT( p_dict_set( &d, "moo", (P_PTR)0x12345678 ) == (P_PTR)0x12345678 );
 
     P_ASSERT( p_dict_get( &d, "test" ) == (P_PTR)0xdeadbeef )
+
+    P_ASSERT( p_dict_set( &d, "moo", (P_PTR)0x87654321 ) == (P_PTR)0x12345678 );
+
+    P_ASSERT( p_dict_get( &d, "moo" ) == (P_PTR)0x87654321 );
 
     p_dict_debug( &d );
 
