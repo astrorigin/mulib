@@ -169,6 +169,45 @@ p_dict_traverse2( p_Dict* d,
 }
 
 P_VOID
+p_dict_traverse_keyval( p_Dict* d,
+        P_VOID (*func)( p_String*, P_PTR ) )
+{
+    p_BTNode* nd;
+    p_DictNode* n;
+    P_ASSERT( d )
+
+    nd = p_btree_least( (p_BTree*)d );
+    for ( ; nd; nd = p_btree_next( nd ))
+    {
+        n = (p_DictNode*) nd->val;
+        for ( ; n; n = n->next )
+        {
+            (*func)( &n->key, n->val );
+        }
+    }
+}
+
+P_VOID
+p_dict_traverse_keyval2( p_Dict* d,
+        P_VOID (*func)( p_String*, P_PTR, P_PTR ),
+        P_PTR userdata )
+{
+    p_BTNode* nd;
+    p_DictNode* n;
+    P_ASSERT( d )
+
+    nd = p_btree_least( (p_BTree*)d );
+    for ( ; nd; nd = p_btree_next( nd ))
+    {
+        n = (p_DictNode*) nd->val;
+        for ( ; n; n = n->next )
+        {
+            (*func)( &n->key, n->val, userdata );
+        }
+    }
+}
+
+P_VOID
 p_dict_node_new( p_DictNode** nd,
         const P_CHAR* key,
         const P_PTR val )

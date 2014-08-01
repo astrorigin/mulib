@@ -119,7 +119,7 @@ p_dict_traverse( p_Dict* d,
         P_VOID (*traverse_fn)( P_PTR ) );
 
 /**
- *  \brief Apply a function to each value in the dict (2 parameters version).
+ *  \brief Apply a function to each value in the dict (with userdata).
  *  \param d The dict.
  *  \param traverse_fn The function to apply.
  *  \param userdata Data passed to traverse_fn.
@@ -127,6 +127,26 @@ p_dict_traverse( p_Dict* d,
 P_EXPORT P_VOID
 p_dict_traverse2( p_Dict* d,
         P_VOID (*traverse_fn)( P_PTR, P_PTR ),
+        P_PTR userdata );
+
+/**
+ *  \brief Apply a function to each key and value in the dict.
+ *  \param d The dict.
+ *  \param traverse_fn The function to apply.
+ */
+P_EXPORT P_VOID
+p_dict_traverse_keyval( p_Dict* d,
+        P_VOID (*traverse_fn)( p_String*, P_PTR ) );
+
+/**
+ *  \brief Apply a function to each key and value in the dict (with userdata).
+ *  \param d The dict.
+ *  \param traverse_fn The function to apply.
+ *  \param userdata Data passed to traverse_fn.
+ */
+P_EXPORT P_VOID
+p_dict_traverse_keyval2( p_Dict* d,
+        P_VOID (*traverse_fn)( p_String*, P_PTR, P_PTR ),
         P_PTR userdata );
 
 /**
