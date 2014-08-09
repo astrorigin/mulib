@@ -52,8 +52,9 @@ struct _p_vector_t
 
 /**
  *  \brief Allocate for a vector.
+ *  \return P_TRUE, or P_FALSE on error.
  */
-P_EXPORT P_VOID
+P_EXPORT P_BOOL
 p_vector_new( p_Vector** vec,
         P_SZ len,
         P_SZ unit,
@@ -61,8 +62,9 @@ p_vector_new( p_Vector** vec,
 
 /**
  *  \brief Initialize a vector
+ *  \return P_TRUE, or P_FALSE on error.
  */
-P_EXPORT P_VOID
+P_EXPORT P_BOOL
 p_vector_init( p_Vector* vec,
         P_SZ len,
         P_SZ unit,
@@ -115,7 +117,7 @@ p_vector_get( const p_Vector* v,
 
 /**
  *  \brief Set an element in the vector.
- *  \param v The vector.
+ *  \param v The vector (not null).
  *  \param index Index of element.
  *  \param value Data to copy.
  *  \return NULL if index is out of range or value was NULL; else the indexed value.
@@ -127,9 +129,9 @@ p_vector_set( p_Vector* v,
 
 /**
  *  \brief Reserve space for elements.
- *  \param v The vector.
+ *  \param v The vector (not null).
  *  \param len Number of elements to accept.
- *  \return Address of new allocated memory.
+ *  \return Address of new allocated memory, or NULL on error.
  */
 P_EXPORT P_PTR
 p_vector_reserve( p_Vector* v,
@@ -140,8 +142,9 @@ p_vector_reserve( p_Vector* v,
  *  \param v The vector.
  *  \param ptr The data.
  *  \param len Number of elements to append.
+ *  \return P_TRUE, or P_FALSE on error.
  */
-P_EXPORT P_VOID
+P_EXPORT P_BOOL
 p_vector_append( p_Vector* v,
         const P_PTR ptr,
         const P_SZ len );

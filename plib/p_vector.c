@@ -27,7 +27,7 @@
 #define P_TRACE( moo, ... )
 #endif
 
-P_VOID
+P_BOOL
 p_vector_new( p_Vector** v,
     P_SZ len,
     P_SZ unit,
@@ -36,20 +36,28 @@ p_vector_new( p_Vector** v,
     P_TRACE( "-- VECTOR -- new ("P_PTR_FMT")\n", *v )
     *v = P_MALLOC( sizeof( p_Vector ) );
     P_ASSERT( *v )
-    p_vector_init( *v, len, unit, csfn );
+#ifdef NDEBUG
+    if ( !*v )
+        return P_FALSE;
+#endif
+    return p_vector_init( *v, len, unit, csfn );
 }
 
 P_VOID
 p_vector_delete( p_Vector** v )
 {
     P_ASSERT( *v )
+#ifdef NDEBUG
+    if ( !*v )
+        return;
+#endif
     P_TRACE( "-- VECTOR -- delete ("P_PTR_FMT")\n", *v )
     p_vector_fini( *v );
     P_FREE( *v, sizeof( p_Vector ) );
     *v = NULL;
 }
 
-P_VOID
+P_BOOL
 p_vector_init( p_Vector* v,
         P_SZ len,
         P_SZ unit,
@@ -58,6 +66,10 @@ p_vector_init( p_Vector* v,
     P_SZ space_req;
 
     P_ASSERT( v )
+#ifdef NDEBUG
+    if ( !v )
+        return P_FALSE;
+#endif
     P_TRACE( "-- VECTOR -- init ("P_PTR_FMT")\n", v )
 
     v->data = NULL;
@@ -71,15 +83,24 @@ p_vector_init( p_Vector* v,
     {
         v->data = P_MALLOC( space_req );
         P_ASSERT( v->data )
+#ifdef NDEBUG
+        if ( !v->data )
+            return P_FALSE;
+#endif
         v->capacity = space_req;
     }
     P_ASSERT( space_req > 0 || len == 0 );
+    return P_TRUE;
 }
 
 P_VOID
 p_vector_fini( p_Vector* v )
 {
     P_ASSERT( v )
+#ifdef NDEBUG
+    if ( !v )
+        return;
+#endif
     P_TRACE( "-- VECTOR -- fini ("P_PTR_FMT")\n", v )
 
     if ( v->data )
@@ -118,6 +139,10 @@ p_vector_set( p_Vector* v,
     P_PTR dest;
 
     P_ASSERT( v )
+#ifdef NDEBUG
+    if ( !v )
+        return NULL;
+#endif
     P_TRACE( "-- VECTOR -- set ("P_PTR_FMT") index ("P_ID_FMT")"
              " ptr ("P_PTR_FMT")\n", v, index, ptr )
 
@@ -146,34 +171,44 @@ p_vector_reserve( p_Vector* v,
     P_SZ req;
 
     P_ASSERT( v )
+#ifdef NDEBUG
+    if ( !v )
+        return NULL;
+#endif
     P_TRACE( "-- VECTOR -- reserve ("P_PTR_FMT")\n", v )
 
     req = v->calc_space_fn ? (*v->calc_space_fn)( v, len ) : len * v->unit;
     if ( v->capacity != req )
     {
         v->data = P_REALLOC( v->data, req, v->capacity );
-        if ( v->data == NULL )
-            P_FATAL_ERROR( "realloc failed ("P_PTR_FMT")", v );
+        if ( !v->data )
+            return NULL;
         v->capacity = req;
     }
     return v->data;
 }
 
-P_VOID
+P_BOOL
 p_vector_append( p_Vector* v,
         const P_PTR ptr,
         const P_SZ len )
 {
     P_ASSERT( v )
     P_ASSERT( ptr )
+#ifdef NDEBUG
+    if ( !v || !ptr )
+        return P_FALSE;
+#endif
     P_TRACE( "-- VECTOR -- append ("P_PTR_FMT")\n", v )
 
     if ( len == 0 )
-        return;
-    p_vector_reserve( v, v->len + len );
+        return P_TRUE;
+    if ( !p_vector_reserve( v, v->len + len ))
+        return P_FALSE;
     memcpy( v->data + ( v->len * v->unit ), ptr, len * v->unit );
     v->len += len;
     P_ASSERT( v->len * v->unit <= v->capacity )
+    return P_TRUE;
 }
 
 P_VOID
