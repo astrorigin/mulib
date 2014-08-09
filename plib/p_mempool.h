@@ -163,7 +163,7 @@ _p_mempool_buckets_fini( P_PTR bucket,
 /**
  *  \brief Let the memory pool find some memory to use.
  *  \param sz Size of memory requested.
- *  \return Pointer to memory.
+ *  \return Pointer to memory, or null on error.
  */
 P_EXPORT P_PTR
 p_mempool_malloc( const P_SZ sz );

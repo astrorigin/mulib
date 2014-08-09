@@ -163,9 +163,9 @@ p_btree_node_free( P_PTR p );
  *  \param val The value.
  *  \param parent The parent node (usually NULL).
  *  \param mallocdoer The allocating function.
- *  \return P_TRUE on success, P_FALSE if the key is duplicate.
+ *  \return 1 on success, 0 if the key is duplicate, -1 on error.
  */
-P_EXPORT P_BOOL
+P_EXPORT P_INT8
 p_btree_node_insert( p_BTNode** node,
         const P_ID key,
         const P_PTR val,
@@ -177,9 +177,9 @@ p_btree_node_insert( p_BTNode** node,
  *  \param btree The binary tree
  *  \param key The key.
  *  \param val The value.
- *  \return P_TRUE on success, P_FALSE if the key is duplicate.
+ *  \return 1 on success, 0 if the key is duplicate, -1 on error.
  */
-P_EXPORT P_BOOL
+P_EXPORT P_INT8
 p_btree_insert( p_BTree* btree,
         const P_ID key,
         const P_PTR val );

@@ -42,6 +42,10 @@ p_btree_new( p_BTree** bt )
     P_TRACE( "-- BTREE -- new ("P_PTR_FMT")\n", (P_PTR)*bt )
     *bt = P_MALLOC( sizeof( p_BTree ));
     P_ASSERT( *bt )
+#ifdef NDEBUG
+    if ( !*bt )
+        return;
+#endif
     p_btree_init( *bt, P_MALLOC_REF, p_btree_node_free_ref );
 }
 
@@ -49,6 +53,10 @@ P_VOID
 p_btree_delete( p_BTree** bt )
 {
     P_ASSERT( *bt )
+#ifdef NDEBUG
+    if ( !*bt )
+        return;
+#endif
     P_TRACE( "-- BTREE -- delete ("P_PTR_FMT")\n", (P_PTR)*bt )
     p_btree_fini( *bt );
     P_FREE( *bt, sizeof( p_BTree ));
@@ -86,7 +94,10 @@ p_btree_node_new( p_BTNode** bt,
              key, parent ? parent->key : 0 )
     *bt = (*mallocdoer)( sizeof( p_BTNode ) );
     P_ASSERT( *bt )
-
+#ifdef NDEBUG
+    if ( !*bt )
+        return;
+#endif
     (*bt)->key = key;
     (*bt)->val = (P_PTR) val;
     (*bt)->less = NULL;
@@ -108,7 +119,7 @@ p_btree_node_delete( p_BTNode** bt,
     *bt = NULL;
 }
 
-P_BOOL
+P_INT8
 p_btree_node_insert( p_BTNode** bt,
         const P_ID key,
         const P_PTR val,
@@ -118,47 +129,38 @@ p_btree_node_insert( p_BTNode** bt,
     if ( !*bt )
     {
         p_btree_node_new( bt, key, val, parent, mallocdoer );
+        if ( !*bt )
+            return -1;
+
         if ( parent )
             p_btree_node_balance( (*bt)->parent, 0, 0 );
-        return P_TRUE;
+        return 1;
     }
 
-#if 0
-    p_BTNode* tmp = *bt;
-    BOOL b;
-
-    if ( key < tmp->key )
-        b = p_btree_node_insert( &tmp->less, key, val, tmp );
-
-    else if ( key > tmp->key )
-        b = p_btree_node_insert( &tmp->more, key, val, tmp );
-
-    else
-    {
-        P_DEBUG( printf( "Error: btree duplicate key %I64u\n", key ); )
-        return P_FALSE;
-    }
-
-    return b;
-#endif
     return
         key < (*bt)->key ?
             p_btree_node_insert( &(*bt)->less, key, val, (*bt), mallocdoer )
         : key > (*bt)->key ?
             p_btree_node_insert( &(*bt)->more, key, val, (*bt), mallocdoer )
-        : P_FALSE;
+        : 0;
 }
 
-P_BOOL
+P_INT8
 p_btree_insert( p_BTree* bt,
         const P_ID key,
         const P_PTR val )
 {
-    P_BOOL b;
+    P_INT8 i;
     P_ASSERT( bt )
-    b = p_btree_node_insert( &bt->root, key, val, NULL, bt->mallocdoer );
+#ifdef NDEBUG
+    if ( !bt )
+        return -1;
+#endif
+    i = p_btree_node_insert( &bt->root, key, val, NULL, bt->mallocdoer );
+    if ( i == -1 )
+        return -1;
     bt->root = p_btree_node_root( bt->root );
-    return b;
+    return i;
 }
 
 P_BOOL
@@ -331,6 +333,10 @@ p_btree_remove( p_BTree* bt,
         const P_ID key )
 {
     P_ASSERT( bt )
+#ifdef NDEBUG
+    if ( !bt )
+        return;
+#endif
     bt->root = p_btree_node_safe_remove( bt->root, key, bt->freedoer );
 }
 

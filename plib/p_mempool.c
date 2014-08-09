@@ -101,14 +101,14 @@ p_mempool_malloc( const P_SZ sz )
 
     if ( !bkt )
     {
-        P_DEBUG( P_BOOL b; )
         P_TRACE( "-- MEMPOOL -- new bucket ("P_SZ_FMT")\n", sz )
         bkt = _P_MALLOC( sizeof( p_MemBucket ) );
+        if ( !bkt )
+            return NULL;
         bkt->alive = NULL;
         bkt->trash = NULL;
-        P_DEBUG( b = )
-        p_btree_insert( &_p_mempool_global->buckets, sz, bkt );
-        P_ASSERT( b )
+        if ( p_btree_insert( &_p_mempool_global->buckets, sz, bkt ) < 0 )
+            return NULL;
         /*p_btree_debug(_p_mempool_global->buckets.root);*/
     }
 
@@ -120,6 +120,8 @@ p_mempool_malloc( const P_SZ sz )
     {
         P_TRACE( "-- MEMPOOL -- new chunk ("P_SZ_FMT")\n", sz )
         chk = _P_MALLOC( sizeof( p_MemChunk ) + sz );
+        if ( !chk )
+            return NULL;
         _p_mempool_global->used += sz;
 
 #ifndef NDEBUG
@@ -152,6 +154,9 @@ p_mempool_free( P_PTR p,
 
     P_TRACE( "-- MEMPOOL -- free ("P_PTR_FMT") ("P_SZ_FMT")\n", p, sz )
     P_ASSERT( _p_mempool_global )
+
+    if ( !p )
+        return;
 
     bkt = (p_MemBucket*) p_btree_get( &_p_mempool_global->buckets, sz );
 #ifndef NDEBUG
@@ -190,7 +195,12 @@ p_mempool_realloc( P_PTR p,
 {
     P_PTR tmp;
 
-    P_ASSERT( sz != oldsz )
+    if ( !p )
+        return p_mempool_malloc( sz );
+
+    if ( sz == oldsz )
+        return p;
+
     P_TRACE( "-- MEMPOOL -- realloc ("P_PTR_FMT") ("P_SZ_FMT" <- "P_SZ_FMT")\n",
              p, sz, oldsz )
 
@@ -209,7 +219,8 @@ p_mempool_purge( p_MemPool* mp,
     {
         p_MemBucket* bkt = (p_MemBucket*)
             p_btree_get( &mp->buckets, bucket );
-        P_ASSERT( bkt )
+        if ( !bkt )
+            return;
         p_mempool_purge_bucket( bkt, NULL );
     }
     else
