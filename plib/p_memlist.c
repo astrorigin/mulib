@@ -43,7 +43,7 @@ p_memlist_malloc( const P_SZ sz )
 
     nd = malloc( sizeof( p_MemListNode ) + sz );
     if ( !nd )
-        P_FATAL_ERROR( "malloc failed ("P_SZ_FMT")", sz );
+        return NULL;
 
     nd->sz = sz;
 
@@ -62,6 +62,9 @@ p_memlist_free( P_PTR p )
     p_MemListNode* prev = NULL;
 
     P_TRACE( "-- MEMLIST -- freeing tracked ("P_PTR_FMT")\n", p )
+
+    if ( !p )
+        return;
 
     P_MEMLIST_LOCK();
     P_ASSERT( _p_memlist_nodes )
@@ -92,6 +95,9 @@ p_memlist_realloc( P_PTR p,
     p_MemListNode* nd;
     p_MemListNode* prev = NULL;
 
+    if ( !p )
+        return p_memlist_malloc( sz );
+
     P_ASSERT( _p_memlist_nodes )
     P_MEMLIST_LOCK();
     nd = _p_memlist_nodes;
@@ -106,8 +112,7 @@ p_memlist_realloc( P_PTR p,
                      P_SZ_FMT" bytes\n", nd->sz, sz )
             nd = realloc( nd, sizeof( p_MemListNode ) + sz );
             if ( !nd )
-                P_FATAL_ERROR( "realloc failed ("P_SZ_FMT" to "
-                               P_SZ_FMT")", nd->sz, sz );
+                return NULL;
 
             nd->sz = sz;
 

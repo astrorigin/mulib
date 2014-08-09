@@ -92,22 +92,29 @@ _p_memlist_nodes;
 
 /**
  *  \brief Malloc replacement.
+ *  \param sz Size requested.
+ *  \return Memory location, or null on error.
  */
 P_EXPORT P_PTR
-p_memlist_malloc( const P_SZ );
+p_memlist_malloc( const P_SZ sz );
 
 /**
  *  \brief Free replacement.
+ *  \param p Pointer to free.
  */
 P_EXPORT P_VOID
-p_memlist_free( P_PTR );
+p_memlist_free( P_PTR p );
 
 /**
  *  \brief Realloc replacement.
+ *  \param p Pointer to realloc.
+ *  \param sz Size requested.
+ *  \return Memory location, or null on error.
+ *  \note Do not assume that memory was left unchanged.
  */
 P_EXPORT P_PTR
-p_memlist_realloc( P_PTR,
-        const P_SZ );
+p_memlist_realloc( P_PTR p,
+        const P_SZ sz );
 
 /**
  *  \brief Print some stats to stdout.
