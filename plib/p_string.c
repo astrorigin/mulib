@@ -39,7 +39,7 @@ p_string_new_len( p_String** s,
     if ( content )
         strncpy( (*s)->data, content, len );
     ((char*)(*s)->data)[ len ] = '\0';
-    (*s)->len = 1;
+    (*s)->len = len + 1;
 }
 
 P_VOID
@@ -54,7 +54,7 @@ p_string_init_len( p_String* s,
     if ( content )
         strncpy( s->data, content, len );
     ((char*)s->data)[ len ] = '\0';
-    s->len = 1;
+    s->len = len + 1;
 }
 
 P_SZ
