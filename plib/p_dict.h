@@ -101,13 +101,15 @@ p_dict_get( const p_Dict* d,
  *  \param d The dict.
  *  \param key The key string.
  *  \param val The pointer value.
- *  \return The pointer value if a new element was inserted,
- *  or the pointer that was replaced, or NULL if key is invalid.
+ *  \param old The pointer value if a new element was inserted,
+ *  or the pointer that was replaced (can be NULL).
+ *  \return P_TRUE, or P_FALSE on error.
  */
-P_EXPORT P_PTR
+P_EXPORT P_BOOL
 p_dict_set( p_Dict* d,
         const P_CHAR* key,
-        const P_PTR val );
+        const P_PTR val,
+        P_PTR* old );
 
 /**
  *  \brief Apply a function to each value in the dict.
@@ -151,8 +153,9 @@ p_dict_traverse_keyval2( p_Dict* d,
 
 /**
  *  \brief Allocate for a dict node.
+ *  \return P_TRUE, or P_FALSE on error.
  */
-P_EXPORT P_VOID
+P_EXPORT P_BOOL
 p_dict_node_new( p_DictNode** nd,
         const P_CHAR* key,
         const P_PTR val );
@@ -172,8 +175,9 @@ p_dict_node_list_delete( p_DictNode* nd,
 
 /**
  *  \brief Initialize a dict node.
+ *  \return P_TRUE, or P_FALSE on error.
  */
-P_EXPORT P_VOID
+P_EXPORT P_BOOL
 p_dict_node_init( p_DictNode* nd,
         const P_CHAR* key,
         const P_PTR val );
