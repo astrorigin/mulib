@@ -49,6 +49,7 @@ typedef p_Vector p_String;
  *  \brief Allocate for a new string.
  *  \param s The string.
  *  \param content String to copy (or NULL).
+ *  \return P_TRUE, or P_FALSE on error.
  */
 #define p_string_new( s, content ) \
         p_string_new_len( s, content, strlen( (const char*)content ))
@@ -58,8 +59,9 @@ typedef p_Vector p_String;
  *  \param s The string.
  *  \param content String to copy (or NULL).
  *  \param len Length of string.
+ *  \return P_TRUE, or P_FALSE on error.
  */
-P_EXPORT P_VOID
+P_EXPORT P_BOOL
 p_string_new_len( p_String** s,
         const P_CHAR* content,
         const P_SZ len );
@@ -74,17 +76,19 @@ p_string_new_len( p_String** s,
  *  \brief Initialize a string.
  *  \param s The string.
  *  \param content String to copy (or NULL).
+ *  \return P_TRUE, or P_FALSE on error.
  */
 #define p_string_init( s, content ) \
-        p_string_init_len( s, content, strlen( (const char*)content ))
+        p_string_init_len( s, content, content ? strlen( (const char*)content ) : 0 )
 
 /**
  *  \brief Initialize a string with length.
  *  \param s The string.
  *  \param content String to copy (or NULL).
  *  \param len Length of string.
+ *  \return P_TRUE, or P_FALSE on error.
  */
-P_EXPORT P_VOID
+P_EXPORT P_BOOL
 p_string_init_len( p_String* s,
         const P_CHAR* content,
         const P_SZ len );
@@ -118,7 +122,7 @@ p_string_calc_space_fn( p_String*,
  *  \brief Set string content.
  *  \param s The string.
  *  \param content String to copy (or NULL).
- *  \return Start of the string.
+ *  \return Start of the string, or NULL on error.
  */
 #define p_string_set( s, content ) \
         p_string_set_len( (s), (content), (content) ? strlen( (const char*)(content) ) : 0 )
@@ -128,7 +132,7 @@ p_string_calc_space_fn( p_String*,
  *  \param s The string.
  *  \param content String to copy (or NULL).
  *  \param len Length of string to copy.
- *  \return Start of the string.
+ *  \return Start of the string, or NULL on error.
  */
 P_EXPORT P_CHAR*
 p_string_set_len( p_String* s,
@@ -145,7 +149,7 @@ p_string_set_len( p_String* s,
  *  \brief Append data to a string.
  *  \param s The string.
  *  \param content String to append (or NULL).
- *  \return Start of string.
+ *  \return Start of string, or NULL on error.
  */
 P_EXPORT P_CHAR*
 p_string_cat( p_String* s,
@@ -156,7 +160,7 @@ p_string_cat( p_String* s,
  *  \param s The string.
  *  \param content String to append (or NULL).
  *  \param len Length of string to append.
- *  \return Start of string.
+ *  \return Start of string, or NULL on error.
  */
 P_EXPORT P_CHAR*
 p_string_cat_len( p_String* s,
@@ -168,9 +172,9 @@ p_string_cat_len( p_String* s,
  *  \param s The string.
  *  \param s1 Substring to be replaced (not NULL).
  *  \param s2 Substring to insert (not NULL).
- *  \return Number of substrings replaced.
+ *  \return P_TRUE, or P_FALSE on error.
  */
-P_EXPORT P_SZ
+P_EXPORT P_BOOL
 p_string_replace( p_String* s,
         const P_CHAR* s1,
         const P_CHAR* s2 );

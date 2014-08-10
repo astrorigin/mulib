@@ -27,34 +27,38 @@
 #define P_TRACE( moo, ... )
 #endif
 
-P_VOID
+P_BOOL
 p_string_new_len( p_String** s,
         const P_CHAR* content,
         const P_SZ len )
 {
     P_ASSERT( s )
 
-    p_vector_new( (p_Vector**)s, len + 1, sizeof( P_CHAR ),
-                  (P_SZ(*)(p_Vector*, P_SZ)) &p_string_calc_space_fn );
+    if ( !p_vector_new( (p_Vector**)s, len + 1, sizeof( P_CHAR ),
+        (P_SZ(*)(p_Vector*, P_SZ)) &p_string_calc_space_fn ))
+        return P_FALSE;
     if ( content )
         strncpy( (*s)->data, content, len );
     ((char*)(*s)->data)[ len ] = '\0';
     (*s)->len = len + 1;
+    return P_TRUE;
 }
 
-P_VOID
+P_BOOL
 p_string_init_len( p_String* s,
         const P_CHAR* content,
         const P_SZ len )
 {
     P_ASSERT( s )
 
-    p_vector_init( (p_Vector*)s, len + 1, sizeof( P_CHAR ),
-                   (P_SZ(*)(p_Vector*, P_SZ)) &p_string_calc_space_fn );
+    if ( !p_vector_init( (p_Vector*)s, len + 1, sizeof( P_CHAR ),
+        (P_SZ(*)(p_Vector*, P_SZ)) &p_string_calc_space_fn ))
+        return P_FALSE;
     if ( content )
         strncpy( s->data, content, len );
     ((char*)s->data)[ len ] = '\0';
     s->len = len + 1;
+    return P_TRUE;
 }
 
 P_SZ
@@ -74,7 +78,8 @@ p_string_set_len( p_String* s,
 
     if ( len == 0 || content == NULL || content[0] == '\0' )
     {
-        p_vector_reserve( (p_Vector*)s, 1 );
+        if ( !p_vector_reserve( (p_Vector*)s, 1 ))
+            return NULL;
         ((P_CHAR*)s->data)[0] = '\0';
         s->len = 1;
     }
@@ -82,7 +87,8 @@ p_string_set_len( p_String* s,
     {
         if ( s->len == len && !strncmp( s->data, content, len ))
             return s->data;
-        p_vector_reserve( (p_Vector*)s, len + 1 );
+        if ( !p_vector_reserve( (p_Vector*)s, len + 1 ))
+            return NULL;
         strncpy( s->data, content, len );
         s->len = len + 1;
         ((P_CHAR*)s->data)[ len ] = '\0';
@@ -101,7 +107,8 @@ p_string_cat( p_String* s,
         return s->data;
     if ( s->len ) /* it should always be */
         s->len -= 1; /* trick to overwrite trailing null */
-    p_vector_append( (p_Vector*)s, (P_PTR)content, strlen( content ) + 1 );
+    if ( !p_vector_append( (p_Vector*)s, (P_PTR)content, strlen( content ) + 1 ))
+        return NULL;
     P_ASSERT( ((P_CHAR*)s->data)[ s->len -1 ] == '\0' )
     return s->data;
 }
@@ -115,7 +122,8 @@ p_string_cat_len( p_String* s,
 
     if ( len == 0 || content == NULL || content[0] == '\0' )
         return s->data;
-    p_vector_reserve( (p_Vector*)s, s->len + len );
+    if ( !p_vector_reserve( (p_Vector*)s, s->len + len ))
+        return NULL;
     memcpy( s->data + ( s->unit * s->len -1 ), content, len );
     ((P_CHAR*)s->data)[ s->len + len ] = '\0';
     s->len += len;
@@ -123,7 +131,7 @@ p_string_cat_len( p_String* s,
     return s->data;
 }
 
-P_SZ
+P_BOOL
 p_string_replace( p_String* s,
         const P_CHAR* this,
         const P_CHAR* that )
@@ -138,11 +146,11 @@ p_string_replace( p_String* s,
 
     len1 = strlen( this );
     if ( p_string_len( s ) == 0 || len1 == 0 || p_string_len( s ) < len1 )
-        return cnt;
+        return P_TRUE;
 
     p = strstr( s->data, this );
     if ( p == NULL )
-        return cnt;
+        return P_TRUE;
     len2 = strlen( that );
 
     if ( len1 == len2 )
@@ -179,7 +187,8 @@ p_string_replace( p_String* s,
             *b++ = *d++;
         *b = '\0';
         s->len -= cnt * ( len1 - len2 );
-        p_vector_reserve( (p_Vector*)s, s->len );
+        if ( !p_vector_reserve( (p_Vector*)s, s->len ))
+            return P_FALSE;
     }
     else
     {
@@ -195,6 +204,8 @@ p_string_replace( p_String* s,
         sz = s->len + (( len2 - len1 ) * cnt );
         cap_req = s->calc_space_fn ? (*s->calc_space_fn)( s, sz ) : sz; 
         buf = b = P_MALLOC( cap_req );
+        if ( !b )
+            return P_FALSE;
         d = p = s->data;
         p = strstr( p, this );
         do
@@ -218,7 +229,7 @@ p_string_replace( p_String* s,
         s->len += cnt * ( len2 - len1 );
         s->capacity = cap_req;
     }
-    return cnt;
+    return P_TRUE;
 }
 
 #ifndef NDEBUG
@@ -233,8 +244,8 @@ p_string_test( P_VOID )
 #endif
 
     p_String s;
-    p_string_init( &s , "" );
-    P_ASSERT( s.len == 1 );
+    p_string_init( &s , "123" );
+    P_ASSERT( s.len == 4 );
 
     p_string_set( &s, "abcdefgabcdefg" );
     P_ASSERT( !strcmp( s.data, "abcdefgabcdefg" ))
