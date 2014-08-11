@@ -36,7 +36,7 @@ p_btree_node_free( P_PTR p )
 }
 #endif
 
-P_VOID
+P_BOOL
 p_btree_new( p_BTree** bt )
 {
     P_TRACE( "-- BTREE -- new ("P_PTR_FMT")\n", (P_PTR)*bt )
@@ -44,9 +44,9 @@ p_btree_new( p_BTree** bt )
     P_ASSERT( *bt )
 #ifdef NDEBUG
     if ( !*bt )
-        return;
+        return P_FALSE;
 #endif
-    p_btree_init( *bt, P_MALLOC_REF, p_btree_node_free_ref );
+    return p_btree_init( *bt, P_MALLOC_REF, p_btree_node_free_ref );
 }
 
 P_VOID
@@ -63,7 +63,7 @@ p_btree_delete( p_BTree** bt )
     *bt = NULL;
 }
 
-P_VOID
+P_BOOL
 p_btree_init( p_BTree* bt,
         P_PTR (*mallocdoer)( P_SZ ),
         P_VOID (*freedoer)( P_PTR ) )
@@ -72,6 +72,7 @@ p_btree_init( p_BTree* bt,
     bt->root = NULL;
     bt->mallocdoer = mallocdoer ? mallocdoer : &p_btree_mallocdoer;
     bt->freedoer = freedoer ? freedoer : &p_btree_freedoer;
+    return P_TRUE;
 }
 
 P_VOID
@@ -83,7 +84,7 @@ p_btree_fini( p_BTree* bt )
     bt->freedoer = NULL;
 }
 
-P_VOID
+P_BOOL
 p_btree_node_new( p_BTNode** bt,
         const P_ID key,
         const P_PTR val,
@@ -96,13 +97,14 @@ p_btree_node_new( p_BTNode** bt,
     P_ASSERT( *bt )
 #ifdef NDEBUG
     if ( !*bt )
-        return;
+        return P_FALSE;
 #endif
     (*bt)->key = key;
     (*bt)->val = (P_PTR) val;
     (*bt)->less = NULL;
     (*bt)->more = NULL;
     (*bt)->parent = (p_BTNode*) parent;
+    return P_TRUE;
 }
 
 P_VOID
@@ -128,8 +130,7 @@ p_btree_node_insert( p_BTNode** bt,
 {
     if ( !*bt )
     {
-        p_btree_node_new( bt, key, val, parent, mallocdoer );
-        if ( !*bt )
+        if ( !p_btree_node_new( bt, key, val, parent, mallocdoer ))
             return -1;
 
         if ( parent )
@@ -715,7 +716,7 @@ p_btree_node_vectorize( const p_BTNode* bt,
     return i;
 }
 
-P_VOID
+P_BOOL
 p_btree_node_unvectorize( p_BTNode** bt,
         P_PTR* vec,
         const P_SZ sz,
@@ -727,7 +728,8 @@ p_btree_node_unvectorize( p_BTNode** bt,
     P_ASSERT( sz )
     P_ASSERT( *bt == NULL )
 
-    p_btree_node_new( bt, 0, NULL, NULL, mallocdoer );
+    if ( !p_btree_node_new( bt, 0, NULL, NULL, mallocdoer ))
+        return P_FALSE;
 
     (*bt)->key = *((P_ID*) vec[ mid ]);
     (*bt)->val = (P_PTR) vec[ mid ];
@@ -736,17 +738,20 @@ p_btree_node_unvectorize( p_BTNode** bt,
     if ( mid )
     {
         p_BTNode* tmp = NULL;
-        p_btree_node_unvectorize( &tmp, vec, mid,
-                *bt, mallocdoer );
+        if ( !p_btree_node_unvectorize( &tmp, vec, mid,
+                *bt, mallocdoer ))
+            return P_FALSE;
         (*bt)->less = tmp;
     }
     if ( sz > mid + 1 )
     {
         p_BTNode* tmp = NULL;
-        p_btree_node_unvectorize( &tmp, &vec[ mid + 1 ], sz - ( mid + 1 ),
-                *bt, mallocdoer );
+        if ( !p_btree_node_unvectorize( &tmp, &vec[ mid + 1 ], sz - ( mid + 1 ),
+                *bt, mallocdoer ))
+            return P_FALSE;
         (*bt)->more = tmp;
     }
+    return P_TRUE;
 }
 
 #ifndef NDEBUG

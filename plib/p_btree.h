@@ -88,8 +88,9 @@ struct _p_btree_t
 /**
  *  \brief Allocate for a tree.
  *  \param bt The tree.
+ *  \return P_TRUE, or P_FALSE on error.
  */
-P_EXPORT P_VOID
+P_EXPORT P_BOOL
 p_btree_new( p_BTree** bt );
 
 /**
@@ -104,8 +105,9 @@ p_btree_delete( p_BTree** bt );
  *  \param btree The binary tree.
  *  \param mallocdoer Allocation function for nodes, or NULL to use malloc.
  *  \param freedoer Deallocation function for nodes, or NULL to use free.
+ *  \return P_TRUE, or P_FALSE on error.
  */
-P_EXPORT P_VOID
+P_EXPORT P_BOOL
 p_btree_init( p_BTree* btree,
         P_PTR (*mallocdoer)( P_SZ ),
         P_VOID (*freedoer)( P_PTR ) );
@@ -124,8 +126,9 @@ p_btree_fini( p_BTree* btree );
  *  \param val The value.
  *  \param parent The parent (or NULL).
  *  \param mallocdoer The allocating function.
+ *  \return P_TRUE, or P_FALSE on error.
  */
-P_EXPORT P_VOID
+P_EXPORT P_BOOL
 p_btree_node_new( p_BTNode** node,
         const P_ID key,
         const P_PTR val,
@@ -474,8 +477,9 @@ p_btree_node_vectorize( const p_BTNode* node,
  *  \param num The size of vector (may not be 0).
  *  \param parent The parent node (may be NULL).
  *  \param mallocdoer The allocating function.
+ *  \return P_TRUE, or P_FALSE on error.
  */
-P_EXPORT P_VOID
+P_EXPORT P_BOOL
 p_btree_node_unvectorize( p_BTNode** node,
         P_PTR* vec,
         const P_SZ num,
