@@ -157,6 +157,13 @@ p_mempool_init( p_MemPool* pool,
         const P_SZ max );
 
 /**
+ *  \brief Deallocate a memory pool created by p_mempool_new (free all chunks).
+ *  \param pool The memory pool.
+ */
+P_EXPORT P_VOID
+p_mempool_delete( p_MemPool** pool );
+
+/**
  *  \brief Finalize a memory pool (free all chunks).
  *  \param pool The memory pool.
  */

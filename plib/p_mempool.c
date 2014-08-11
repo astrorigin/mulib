@@ -71,6 +71,20 @@ p_mempool_init( p_MemPool* mp,
     return p_btree_init( &mp->buckets, _P_MALLOC_REF, _P_FREE_REF );
 }
 
+P_EXPORT P_VOID
+p_mempool_delete( p_MemPool** mp )
+{
+    P_TRACE( "-- MEMPOOL -- delete ("P_PTR_FMT")\n", mp )
+    P_ASSERT( mp )
+#ifdef NDEBUG
+    if ( !mp )
+        return;
+#endif
+    p_mempool_fini( *mp );
+    _P_FREE( *mp );
+    *mp = NULL;
+}
+
 P_VOID
 p_mempool_fini( p_MemPool* mp )
 {
