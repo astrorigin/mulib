@@ -41,7 +41,7 @@ p_mempool_set( const p_MemPool* mp )
     _p_mempool_global = (p_MemPool*) mp;
 }
 
-P_VOID
+P_BOOL
 p_mempool_init( p_MemPool* mp,
         const P_SZ max )
 {
@@ -53,7 +53,7 @@ p_mempool_init( p_MemPool* mp,
 #ifndef NDEBUG
     mp->record = 0;
 #endif
-    p_btree_init( &mp->buckets, _P_MALLOC_REF, _P_FREE_REF );
+    return p_btree_init( &mp->buckets, _P_MALLOC_REF, _P_FREE_REF );
 }
 
 P_VOID

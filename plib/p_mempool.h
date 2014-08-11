@@ -140,8 +140,9 @@ _p_mempool_global;
  *  \brief Initialize a memory pool.
  *  \param pool The memory pool.
  *  \param max Maximum amount of memory allowed to use (0 for no limits)
+ *  \return P_TRUE, or P_FALSE on error.
  */
-P_EXPORT P_VOID
+P_EXPORT P_BOOL
 p_mempool_init( p_MemPool* pool,
         const P_SZ max );
 
