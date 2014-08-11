@@ -42,6 +42,21 @@ p_mempool_set( const p_MemPool* mp )
 }
 
 P_BOOL
+p_mempool_new( p_MemPool** mp,
+        const P_SZ max )
+{
+    P_TRACE( "-- MEMPOOL -- new ("P_PTR_FMT") max: "P_SZ_FMT"\n", mp, max )
+    P_ASSERT( mp )
+    *mp = _P_MALLOC( sizeof( p_MemPool ));
+    P_ASSERT( *mp )
+#ifdef NDEBUG
+    if ( !*mp )
+        return P_FALSE;
+#endif
+    return p_mempool_init( *mp, max );
+}
+
+P_BOOL
 p_mempool_init( p_MemPool* mp,
         const P_SZ max )
 {
