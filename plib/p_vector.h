@@ -112,7 +112,7 @@ p_vector_get( const p_Vector* v,
 #else /* release mode */
 
 #define p_vector_get( v, idx ) \
-        ( (idx) >= (v)->len ? (P_PTR)0 : (v)->data + ( (idx) * (v)->unit ))
+        ( ((P_SZ)idx) >= (v)->len ? (P_PTR)0 : (v)->data + ( (idx) * (v)->unit ))
 #endif /* NDEBUG */
 
 /**
