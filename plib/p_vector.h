@@ -107,7 +107,7 @@ p_vector_default_space_fn( p_Vector* self,
  */
 P_EXPORT P_PTR
 p_vector_get( const p_Vector* v,
-        const P_SZ index );
+        const P_ID index );
 
 /**
  *  \brief Set an element in the vector.

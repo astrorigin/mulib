@@ -123,10 +123,10 @@ p_vector_default_space_fn( p_Vector* self,
 
 P_PTR
 p_vector_get( const p_Vector* v,
-        const P_SZ index )
+        const P_ID index )
 {
     P_ASSERT( v )
-    P_TRACE( "-- VECTOR -- get ("P_PTR_FMT") index ("P_PTR_FMT")\n", v, index );
+    P_TRACE( "-- VECTOR -- get ("P_PTR_FMT") index ("P_ID_FMT")\n", v, index );
 
     return index >= v->len ? NULL : v->data + ( index * v->unit );
 }
