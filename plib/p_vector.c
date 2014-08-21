@@ -132,6 +132,18 @@ p_vector_get( const p_Vector* v,
 }
 
 P_PTR
+p_vector_get_next( p_Vector* v )
+{
+    P_ASSERT( v )
+    P_TRACE( "-- VECTOR -- get next ("P_PTR_FMT")\n", v );
+
+    if ( !p_vector_reserve( v, v->len + 1 ))
+        return NULL;
+    P_ASSERT( v->len * v->unit < v->capacity )
+    return v->data + ( v->len * v->unit );
+}
+
+P_PTR
 p_vector_set( p_Vector* v,
         const P_ID index,
         const P_PTR ptr )

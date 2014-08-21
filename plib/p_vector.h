@@ -110,6 +110,15 @@ p_vector_get( const p_Vector* v,
         const P_ID index );
 
 /**
+ *  \brief Get the next uninitialized element in the vector.
+ *  \param v The vector.
+ *  \return NULL on error, else address of element.
+ *  \note You should increment the length of the vector.
+ */
+P_EXPORT P_PTR
+p_vector_get_next( p_Vector* v );
+
+/**
  *  \brief Set an element in the vector.
  *  \param v The vector (not null).
  *  \param index Index of element.
