@@ -99,7 +99,6 @@ p_vector_default_space_fn( p_Vector* self,
 #define p_vector_fill( v, p, sz ) \
         do { memcpy( (v)->data, (p), (sz) * (v)->unit ); (v)->len = (sz); } while (0)
 
-#ifndef NDEBUG
 /**
  *  \brief Get an element in the vector.
  *  \param v The vector.
@@ -109,11 +108,6 @@ p_vector_default_space_fn( p_Vector* self,
 P_EXPORT P_PTR
 p_vector_get( const p_Vector* v,
         const P_SZ index );
-#else /* release mode */
-
-#define p_vector_get( v, idx ) \
-        ( ((P_SZ)idx) >= (v)->len ? (P_PTR)0 : (v)->data + ( (idx) * (v)->unit ))
-#endif /* NDEBUG */
 
 /**
  *  \brief Set an element in the vector.

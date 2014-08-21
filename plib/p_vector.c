@@ -121,7 +121,6 @@ p_vector_default_space_fn( p_Vector* self,
     return len * 2 * self->unit;
 }
 
-#ifndef NDEBUG
 P_PTR
 p_vector_get( const p_Vector* v,
         const P_SZ index )
@@ -131,7 +130,6 @@ p_vector_get( const p_Vector* v,
 
     return index >= v->len ? NULL : v->data + ( index * v->unit );
 }
-#endif /* NDEBUG */
 
 P_PTR
 p_vector_set( p_Vector* v,
