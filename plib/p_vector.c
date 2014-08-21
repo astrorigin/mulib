@@ -107,9 +107,11 @@ p_vector_fini( p_Vector* v )
     {
         P_FREE( v->data, v->capacity );
         v->data = NULL;
-        v->len = 0;
-        v->capacity = 0;
     }
+    v->len = 0;
+    v->unit = 0;
+    v->capacity = 0;
+    v->calc_space_fn = NULL;
 }
 
 P_SZ
