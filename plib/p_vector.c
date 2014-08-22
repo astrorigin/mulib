@@ -230,6 +230,15 @@ p_vector_traverse( p_Vector* v,
     P_SZ i;
     const P_SZ vlen = v->len;
 
+    P_ASSERT( v )
+    P_ASSERT( traverse_fn )
+#ifdef NDEBUG
+    if ( !v || !traverse_fn )
+        return;
+#endif
+    P_TRACE( "-- VECTOR -- traverse ("P_PTR_FMT") func("P_PTR_FMT")\n",
+        v, traverse_fn )
+
     for ( i = 0; i < vlen; ++i )
     {
         (*traverse_fn)( v->data + ( i * v->unit ));
@@ -243,6 +252,15 @@ p_vector_traverse2( p_Vector* v,
 {
     P_SZ i;
     const P_SZ vlen = v->len;
+
+    P_ASSERT( v )
+    P_ASSERT( traverse_fn )
+#ifdef NDEBUG
+    if ( !v || !traverse_fn )
+        return;
+#endif
+    P_TRACE( "-- VECTOR -- traverse2 ("P_PTR_FMT") func("P_PTR_FMT") udata("P_PTR_FMT")\n",
+        v, traverse_fn, userdata )
 
     for ( i = 0; i < vlen; ++i )
     {
