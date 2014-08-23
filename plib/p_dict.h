@@ -117,7 +117,7 @@ p_dict_set( p_Dict* d,
  *  \param key The key string.
  *  \return Element that was removed, or NULL if not found (or key is invalid).
  */
-P_PTR
+P_EXPORT P_PTR
 p_dict_unset( p_Dict* d,
         const P_CHAR* key );
 
