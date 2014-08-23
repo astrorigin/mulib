@@ -279,6 +279,7 @@ p_btree_node_set( const p_BTNode* node,
  *  \param bt The binary tree.
  *  \param idx The key.
  *  \param val The value.
+ *  \return P_TRUE if the key was found and value changed.
  *  \see p_btree_node_set
  */
 #define p_btree_set( bt, idx, val ) \
