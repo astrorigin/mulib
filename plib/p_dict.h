@@ -112,6 +112,16 @@ p_dict_set( p_Dict* d,
         P_PTR* old );
 
 /**
+ *  \brief Remove an element from the dict.
+ *  \param d The dict.
+ *  \param key The key string.
+ *  \return Element that was removed, or NULL if not found (or key is invalid).
+ */
+P_PTR
+p_dict_unset( p_Dict* d,
+        const P_CHAR* key );
+
+/**
  *  \brief Apply a function to each value in the dict.
  *  \param d The dict.
  *  \param traverse_fn The function to apply.

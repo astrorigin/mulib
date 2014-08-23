@@ -18,6 +18,8 @@
 
 #include <p_dict.h>
 
+#include "p_sllist.h"
+
 #undef P_TRACE
 #if defined( P_TRACE_MODE ) && defined( P_TRACE_DICT )
 #define P_TRACE P_TRACER
@@ -134,6 +136,48 @@ p_dict_set( p_Dict* d,
         }
     }
     return P_TRUE;
+}
+
+P_PTR
+p_dict_unset( p_Dict* d,
+        const P_CHAR* key )
+{
+    p_DictNode* nd, *first, *prev = NULL;
+    P_ID k;
+    P_ASSERT( d )
+
+    if ( key == NULL || key[0] == '\0' )
+        return NULL;
+    k = p_dict_hash( key, strlen( key ));
+    nd = p_btree_get( (p_BTree*)d, k );
+    if ( !nd )
+        return NULL;
+    if ( !nd->next )
+    {
+        if ( !strcmp( nd->key.data, key ))
+        {
+            P_PTR val = nd->val;
+            p_btree_remove( (p_BTree*)d, k );
+            p_dict_node_delete( &nd );
+            return val;
+        }
+        return NULL;
+    }
+    first = nd;
+    for ( ; nd; nd = nd->next )
+    {
+        if ( !strcmp( nd->key.data, key ))
+        {
+            P_PTR val = nd->val;
+            if ( nd == first )
+                p_btree_set( (p_BTree*)d, k, nd->next );
+            p_sllist_take( first, nd, prev );
+            p_dict_node_delete( &nd );
+            return val;
+        }
+        prev = nd;
+    }
+    return NULL;
 }
 
 P_VOID
