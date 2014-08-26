@@ -41,6 +41,9 @@ p_memlist_malloc( const P_SZ sz )
 
     P_TRACE( "-- MEMLIST -- allocating "P_SZ_FMT" bytes:\n", sz )
 
+    if ( sz == 0 )
+        return NULL;
+
     nd = malloc( sizeof( p_MemListNode ) + sz );
     if ( !nd )
         return NULL;
@@ -97,6 +100,12 @@ p_memlist_realloc( P_PTR p,
 
     if ( !p )
         return p_memlist_malloc( sz );
+
+    if ( sz == 0 )
+    {
+        p_memlist_free( p );
+        return NULL;
+    }
 
     P_ASSERT( _p_memlist_nodes )
     P_MEMLIST_LOCK();

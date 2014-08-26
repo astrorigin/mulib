@@ -126,6 +126,9 @@ p_mempool_malloc( const P_SZ sz )
     P_TRACE( "-- MEMPOOL -- malloc ("P_SZ_FMT")\n", sz )
     P_ASSERT( _p_mempool_global )
 
+    if ( sz == 0 )
+        return NULL;
+
     bkt = (p_MemBucket*) p_btree_get( &_p_mempool_global->buckets, sz );
 
     if ( !bkt )
@@ -184,7 +187,7 @@ p_mempool_free( P_PTR p,
     P_TRACE( "-- MEMPOOL -- free ("P_PTR_FMT") ("P_SZ_FMT")\n", p, sz )
     P_ASSERT( _p_mempool_global )
 
-    if ( !p )
+    if ( !p || sz == 0 )
         return;
 
     bkt = (p_MemBucket*) p_btree_get( &_p_mempool_global->buckets, sz );
@@ -224,14 +227,20 @@ p_mempool_realloc( P_PTR p,
 {
     P_PTR tmp;
 
+    P_TRACE( "-- MEMPOOL -- realloc ("P_PTR_FMT") ("P_SZ_FMT" <- "P_SZ_FMT")\n",
+             p, sz, oldsz )
+
     if ( !p )
         return p_mempool_malloc( sz );
 
+    if ( sz == 0 )
+    {
+        p_mempool_free( p, oldsz );
+        return NULL;
+    }
+
     if ( sz == oldsz )
         return p;
-
-    P_TRACE( "-- MEMPOOL -- realloc ("P_PTR_FMT") ("P_SZ_FMT" <- "P_SZ_FMT")\n",
-             p, sz, oldsz )
 
     tmp = p_mempool_malloc( sz );
     memcpy( tmp, p, P_LIMIT( oldsz, sz ));
