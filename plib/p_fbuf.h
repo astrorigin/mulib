@@ -32,6 +32,10 @@ extern "C" {
 
 #include "p_h.h"
 
+#ifdef P_FCGI_STDIO
+#include <fcgi_stdio.h>
+#endif
+
 /**
  *  \typedef p_FBuf
  */

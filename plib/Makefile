@@ -34,6 +34,7 @@ OPT = -g # debug mode
 
 # Other options
 #OPT += -DP_STRING_QUANTA=32
+#OPT += -DP_FCGI_STDIO
 
 # Packaging options
 VERSION = test
