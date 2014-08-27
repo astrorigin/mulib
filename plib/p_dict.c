@@ -371,6 +371,9 @@ p_dict_test( P_VOID )
 
     P_ASSERT( p_dict_get( &d, "moo" ) == (P_PTR)0x87654321 );
 
+    P_ASSERT( p_dict_unset( &d, "moo" ) == (P_PTR)0x87654321 );
+    P_ASSERT( p_dict_get( &d, "moo" ) == NULL );
+
     p_dict_debug( &d );
 
     p_dict_fini( &d );
