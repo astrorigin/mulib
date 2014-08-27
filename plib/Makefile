@@ -45,6 +45,7 @@ INC = p_btree.h \
       p_csv.h \
       p_dict.h \
       p_dllist.h \
+      p_fbuf.h \
       p_h.h \
       p_llabs.h \
       p_memlist.h \
@@ -61,6 +62,7 @@ SRC = p_btree.c \
       p_csv_test.c \
       p_dict.c \
       p_dict_test.c \
+      p_fbuf.c \
       p_llabs.c \
       p_memlist.c \
       p_mempool.c \
@@ -83,6 +85,7 @@ OBJ = p_btree.o \
       p_chrono.o \
       p_csv.o \
       p_dict.o \
+      p_fbuf.o \
       p_llabs.o \
       p_memlist.o \
       p_mempool.o \
@@ -103,6 +106,7 @@ p_chrono.h: p_h.h
 p_csv.h: p_h.h
 p_dict.h: p_btree.h p_h.h p_mempool.h p_string.h
 p_dllist.h: p_h.h
+p_fbuf.h: p_h.h
 p_h.h:
 p_llabs.h:
 p_memlist.h: p_h.h p_mutex.h
@@ -124,6 +128,9 @@ p_csv.o: p_csv.c p_csv.h p_h.h
 	$(CC) $(CFLAGS) $(OPT) -c $< -o $@
 
 p_dict.o: p_dict.c p_btree.h p_dict.h p_h.h p_mempool.h p_string.h
+	$(CC) $(CFLAGS) $(OPT) -c $< -o $@
+
+p_fbuf.o: p_fbuf.c p_fbuf.h p_h.h
 	$(CC) $(CFLAGS) $(OPT) -c $< -o $@
 
 p_llabs.o: p_llabs.c p_llabs.h

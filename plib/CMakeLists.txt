@@ -13,6 +13,7 @@ set( INC
     p_csv.h
     p_dict.h
     p_dllist.h
+    p_fbuf.h
     p_h.h
     p_llabs.h
     p_memlist.h
@@ -28,6 +29,7 @@ set( SRC
     p_chrono.c
     p_csv.c
     p_dict.c
+    p_fbuf.c
     p_llabs.c
     p_memlist.c
     p_mempool.c
