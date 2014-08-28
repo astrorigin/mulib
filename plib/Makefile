@@ -30,6 +30,7 @@ OPT = -g # debug mode
 #OPT += -DP_TRACE_MEMLIST
 #OPT += -DP_TRACE_MEMPOOL
 #OPT += -DP_TRACE_STRING
+#OPT += -DP_TRACE_VDICT
 #OPT += -DP_TRACE_VECTOR
 
 # Other options
@@ -54,6 +55,7 @@ INC = p_btree.h \
       p_mutex.h \
       p_sllist.h \
       p_string.h \
+      p_vdict.h \
       p_vector.h
 
 SRC = p_btree.c \
@@ -73,6 +75,7 @@ SRC = p_btree.c \
       p_sllist.c \
       p_string.c \
       p_string_test.c \
+      p_vdict.c \
       p_vector.c \
       p_vector_test.c
 
@@ -92,6 +95,7 @@ OBJ = p_btree.o \
       p_mempool.o \
       p_sllist.o \
       p_string.o \
+      p_vdict.o \
       p_vector.o
 
 .PHONY: all clean clean-obj clean-test install test uninstall
@@ -115,6 +119,7 @@ p_mempool.h: p_btree.h p_h.h p_memlist.h
 p_mutex.h: p_h.h
 p_sllist.h: p_h.h
 p_string.h: p_h.h p_vector.h
+p_vdict.h: p_btree.h p_dict.h p_h.h p_mempool.h p_vector.h
 p_vector.h: p_h.h
 
 # Objects
@@ -147,6 +152,9 @@ p_sllist.o: p_sllist.c p_h.h p_sllist.h
 	$(CC) $(CFLAGS) $(OPT) -c $< -o $@
 
 p_string.o: p_string.c p_h.h p_mempool.h p_string.h p_vector.h
+	$(CC) $(CFLAGS) $(OPT) -c $< -o $@
+
+p_vdict.o: p_vdict.c p_btree.h p_dict.h p_h.h p_mempool.h p_sllist.h p_vector.h
 	$(CC) $(CFLAGS) $(OPT) -c $< -o $@
 
 p_vector.o: p_vector.c p_btree.h p_h.h p_memlist.h p_mempool.h p_vector.h
