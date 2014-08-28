@@ -133,7 +133,7 @@ p_chrono.o: p_chrono.c p_chrono.h p_h.h
 p_csv.o: p_csv.c p_csv.h p_h.h
 	$(CC) $(CFLAGS) $(OPT) -c $< -o $@
 
-p_dict.o: p_dict.c p_btree.h p_dict.h p_h.h p_mempool.h p_string.h
+p_dict.o: p_dict.c p_btree.h p_dict.h p_h.h p_mempool.h p_sllist.h p_string.h
 	$(CC) $(CFLAGS) $(OPT) -c $< -o $@
 
 p_fbuf.o: p_fbuf.c p_fbuf.h p_h.h
