@@ -198,6 +198,7 @@ p_vdict_node_init( p_VDictNode* nd,
 P_EXPORT P_VOID
 p_vdict_node_fini( p_VDictNode* nd );
 
+#if 0
 /**
  *  \brief Allocate a vdict node with read-only data.
  */
@@ -250,6 +251,7 @@ p_vdict_ro_set( p_VDict* d,
         const P_SZ len,
         const P_PTR val,
         P_PTR* old );
+#endif
 
 #ifndef NDEBUG
 #if 0

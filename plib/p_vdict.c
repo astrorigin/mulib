@@ -266,6 +266,7 @@ p_vdict_node_fini( p_VDictNode* nd )
     nd->val = NULL;
 }
 
+#if 0
 P_BOOL
 p_vdict_node_ro_new( p_VDictNode** nd,
         const P_PTR data,
@@ -376,5 +377,6 @@ p_vdict_ro_set( p_VDict* d,
     }
     return P_TRUE;
 }
+#endif
 
 /* vi: set fenc=utf-8 ff=unix et sw=4 ts=4 sts=4 : */
