@@ -18,7 +18,7 @@
 
 /**
  *  \file p_dict.h
- *  \brief Hash tree container.
+ *  \brief Hash tree container for strings.
  *  \copyright GNU Lesser General Public License
  *  \author Stanislas Marquis <smarquis@astrorigin.ch>
  */
