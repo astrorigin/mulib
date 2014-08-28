@@ -105,7 +105,8 @@ p_vector_fini( p_Vector* v )
 
     if ( v->data )
     {
-        P_FREE( v->data, v->capacity );
+        if ( v->capacity )
+            P_FREE( v->data, v->capacity );
         v->data = NULL;
     }
     v->len = 0;
