@@ -37,6 +37,13 @@ extern "C" {
 #include <stdlib.h>
 #include <string.h>
 
+/*
+ *  Support for fcgi
+ */
+#ifdef P_FCGI_STDIO
+#include <fcgi_stdio.h>
+#endif
+
 /**
  *  \def P_EXPORT
  *  \brief DLL instructions, for MSVC
