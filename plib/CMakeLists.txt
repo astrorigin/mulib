@@ -7,6 +7,18 @@ add_definitions( -ansi -Wall -Wextra -Werror )
 
 include_directories( BEFORE . )
 
+set( P_FCGI_STDIO off
+    CACHE BOOL "Compile with fcgi_stdio.h" )
+if ( P_FCGI_STDIO )
+    add_definitions( -DP_FCGI_STDIO )
+endif()
+
+set( P_NO_MEMPOOL off
+    CACHE BOOL "Compile without mempool" )
+if ( P_NO_MEMPOOL )
+    add_definitions( -DP_NO_MEMPOOL )
+endif()
+
 set( INC
     p_btree.h
     p_chrono.h
