@@ -48,6 +48,7 @@ INC = p_btree.h \
       p_dict.h \
       p_dllist.h \
       p_fbuf.h \
+      p_g11n.h \
       p_h.h \
       p_llabs.h \
       p_memlist.h \
@@ -66,6 +67,8 @@ SRC = p_btree.c \
       p_dict.c \
       p_dict_test.c \
       p_fbuf.c \
+      p_g11n.c \
+      p_g11n_test.c \
       p_llabs.c \
       p_memlist.c \
       p_mempool.c \
@@ -90,6 +93,7 @@ OBJ = p_btree.o \
       p_csv.o \
       p_dict.o \
       p_fbuf.o \
+      p_g11n.o \
       p_llabs.o \
       p_memlist.o \
       p_mempool.o \
@@ -98,7 +102,7 @@ OBJ = p_btree.o \
       p_vdict.o \
       p_vector.o
 
-.PHONY: all clean clean-obj clean-test install test uninstall
+.PHONY: all clean clean-exe clean-obj clean-test exe install test uninstall
 
 .DEFAULT_GOAL = all
 
@@ -112,6 +116,7 @@ p_csv.h: p_h.h
 p_dict.h: p_btree.h p_h.h p_mempool.h p_string.h
 p_dllist.h: p_h.h
 p_fbuf.h: p_h.h
+p_g11n.h: p_h.h
 p_h.h:
 p_llabs.h:
 p_memlist.h: p_h.h p_mutex.h
@@ -137,6 +142,9 @@ p_dict.o: p_dict.c p_btree.h p_dict.h p_h.h p_mempool.h p_sllist.h p_string.h
 	$(CC) $(CFLAGS) $(OPT) -c $< -o $@
 
 p_fbuf.o: p_fbuf.c p_fbuf.h p_h.h
+	$(CC) $(CFLAGS) $(OPT) -c $< -o $@
+
+p_g11n.o: p_g11n.c p_dict.h p_g11n.h p_vdict.h p_vector.h
 	$(CC) $(CFLAGS) $(OPT) -c $< -o $@
 
 p_llabs.o: p_llabs.c p_llabs.h
@@ -168,6 +176,20 @@ libplib.a: $(OBJ)
 libplib.so: $(OBJ)
 	$(CC) -shared -o $@ $(OBJ)
 
+# Executables
+
+p_i18n: p_i18n.c
+	$(CC) -std=gnu99 -Wall -Wextra -Werror $< -o $@
+
+p_l10n: p_l10n.c
+	$(CC) -std=gnu99 -Wall -Wextra -Werror $< -o $@
+
+exe: p_i18n \
+     p_l10n
+
+clean-exe:
+	$(RM) p_i18n p_l10n
+
 # Tests
 
 p_btree_test.o: p_btree_test.c p_btree.h p_h.h
@@ -186,6 +208,12 @@ p_dict_test.o: p_dict_test.c p_btree.h p_dict.h p_h.h p_mempool.h p_string.h
 	$(CC) $(CFLAGS) $(OPT) -c $< -o $@
 
 p_dict_test: p_dict_test.o libplib.a
+	$(CC) $(LDFLAGS) -o $@ $< libplib.a
+
+p_g11n_test.o: p_g11n_test.c p_dict.h p_h.h p_vdict.h
+	$(CC) $(CFLAGS) $(OPT) -c $< -o $@
+
+p_g11n_test: p_g11n_test.o libplib.a
 	$(CC) $(LDFLAGS) -o $@ $< libplib.a
 
 p_mempool_test.o: p_mempool_test.c p_btree.h p_h.h p_mempool.h
@@ -219,6 +247,7 @@ p_vector_test: p_vector_test.o libplib.a
 	$(CC) $(LDFLAGS) -o $@ $< libplib.a
 
 test: p_btree_test \
+      p_g11n_test \
       p_mempool_test \
       p_mempool_test_01 \
       p_mempool_test_02 \
@@ -247,7 +276,7 @@ dist/plib-$(VERSION).tar.bz2: $(AUX) $(INC) $(SRC)
 clean-obj:
 	$(RM) *.o
 
-clean: clean-obj clean-test
+clean: clean-exe clean-obj clean-test
 	$(RM) *.a *.so
 
 install: libplib.so
