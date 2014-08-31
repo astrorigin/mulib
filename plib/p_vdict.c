@@ -252,7 +252,8 @@ p_vdict_node_init( p_VDictNode* nd,
     if ( !p_vector_init( &nd->key, key->len, key->unit, key->calc_space_fn ))
         return P_FALSE;
     if ( key->len )
-        memcpy( &nd->key.data, key->data, key->len );
+        memcpy( nd->key.data, key->data, key->len );
+    nd->key.len = key->len;
     nd->val = (P_PTR) val;
     return P_TRUE;
 }
