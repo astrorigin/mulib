@@ -36,6 +36,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifndef P_NO_MEMPOOL
+#include "p_mempool.h"
+#endif
+#include "p_string.h"
+
 const char templ[] =
 "***CONTEXT***\n%s"
 "*TEXT*\n%s"
@@ -51,115 +56,78 @@ stop( const char* msg )
 }
 
 char
-get_string( char** p, char** ret )
+get_string( char** p, p_String* tmp )
 {
     char flag = 0;
     char* q = *p;
-    FILE* tmpf;
-    char* tmp = NULL;
-    size_t tmpsz;
+
     while ( isspace( *q )) ++q;
     if ( *q != '"' )
         goto finish;
-    if ( !( tmpf = open_memstream( &tmp, &tmpsz )))
-        stop( strerror( errno ));
     while ( *++q )
     {
         if ( *q == '"' && *( q - 1 ) != '\\' )
         {
             ++q;
             flag = 1;
-            if ( fputc( '\n', tmpf ) == EOF )
+            if ( !p_string_cat_len( tmp, "\n", 1 ))
                 stop( "nomem" );
             break;
         }
-        if ( fputc( *q, tmpf ) == EOF )
+        if ( !p_string_cat_len( tmp, q, 1 ))
             stop( "nomem" );
     }
-    if ( fclose( tmpf ) == EOF )
-        stop( strerror( errno ));
-
     finish:
     *p = q;
-    if ( flag )
-        *ret = tmp;
-    else if ( tmp )
-        free( tmp );
     return flag;
 }
 
 char
-get_string2( char** p, char** s1, char** s2 )
+get_string2( char** p, p_String* s1, p_String* s2 )
 {
     if ( !get_string( p, s1 ))
         return 0;
     while( isspace( *(*p) )) ++(*p);
     if ( *(*p) != ',' )
-    {
-        if ( *s1 )
-            free( *s1 );
         return 0;
-    }
     ++(*p);
     if ( !get_string( p, s2 ))
-    {
-        if ( *s1 )
-            free( *s1 );
         return 0;
-    }
     return 1;
 }
 
 char
-get_string3( char** p, char** s1, char** s2, char** s3 )
+get_string3( char** p, p_String* s1, p_String* s2, p_String* s3 )
 {
     if ( !get_string( p, s1 ))
         return 0;
     while( isspace( *(*p) )) ++(*p);
     if ( *(*p) != ',' )
-    {
-        if ( *s1 )
-            free( *s1 );
         return 0;
-    }
     ++(*p);
     if ( !get_string( p, s2 ))
-    {
-        if ( *s1 )
-            free( *s1 );
         return 0;
-    }
     while( isspace( *(*p) )) ++(*p);
     if ( *(*p) != ',' )
-    {
-        if ( *s1 )
-            free( *s1 );
-        if ( *s2 )
-            free( *s2 );
         return 0;
-    }
     ++(*p);
     if ( !get_string( p, s3 ))
-    {
-        if ( *s1 )
-            free( *s1 );
-        if ( *s2 )
-            free( *s2 );
         return 0;
-    }
     return 1;
 }
 
 int
 main( int argc, char* argv[] )
 {
-    FILE* tmpf;
-    char* tmp;
-    size_t tmpsz;
+#ifndef P_NO_MEMPOOL
+    p_MemPool mp;
+#endif
+    p_String tmp;
     char* p;
 #if 0
     p_l10n_Translation t;
 #endif
+
     if ( argc > 1 && argv[1][0] != '-' )
     {
         if ( !freopen( argv[1], "r", stdin ))
@@ -173,33 +141,42 @@ main( int argc, char* argv[] )
         // TODO
     }
 #endif
-    if ( !( tmpf = open_memstream( &tmp, &tmpsz )))
-        stop( strerror( errno ));
+
+#ifndef P_NO_MEMPOOL
+    if ( !p_mempool_init( &mp, 0 ))
+        stop( "nomem" );
+    p_mempool_set( &mp );
+#endif
+
+    if ( !p_string_init( &tmp, "" ))
+        stop( "nomem" );
 
     while ( !feof( stdin ))
     {
         char buf[512];
         size_t z = fread( buf, 1, 512, stdin );
-        if ( fwrite( buf, 1, z, tmpf ) != z )
+        if ( !p_string_cat_len( &tmp, buf, z ))
             stop( "nomem" );
     }
 
-    if ( fclose( tmpf ) == EOF )
-        stop( strerror( errno ));
-
-    p = tmp;
+    p = tmp.data;
     while ( ( p = strstr( p, "p_i18n" )))
     {
         p += 6;
         while ( isspace( *p )) ++p;
         if ( *p == '(' ) /* i18n( txt ) */
         {
-            char* txt = NULL;
+            p_String txt;
+            if ( !p_string_init( &txt, "" ))
+                stop( "nomem" );
             ++p;
             if ( !get_string( &p, &txt ))
+            {
+                p_string_fini( &txt );
                 continue;
-            fprintf( stdout, templ, "", txt, "" );
-            free ( txt );
+            }
+            fprintf( stdout, templ, "", (P_CHAR*)txt.data, "" );
+            p_string_fini( &txt );
         }
         else if ( *p == '_' )
         {
@@ -210,13 +187,22 @@ main( int argc, char* argv[] )
                 while ( isspace( *p )) ++p;
                 if ( *p == '(' ) /* i18n_p( txt, plural ) */
                 {
-                    char* txt = NULL, *plural = NULL;
+                    p_String txt;
+                    p_String plural;
+                    if ( !p_string_init( &txt, "" )
+                        || !p_string_init( &plural, "" ))
+                        stop( "nomem" );
                     ++p;
                     if ( !get_string2( &p, &txt, &plural ))
+                    {
+                        p_string_fini( &txt );
+                        p_string_fini( &plural );
                         continue;
-                    fprintf( stdout, templ, "", txt, plural );
-                    free( txt );
-                    free( plural );
+                    }
+                    fprintf( stdout, templ, "",
+                        (P_CHAR*)txt.data, (P_CHAR*)plural.data );
+                    p_string_fini( &txt );
+                    p_string_fini( &plural );
                 }
                 else continue;
             }
@@ -226,13 +212,22 @@ main( int argc, char* argv[] )
                 while ( isspace( *p )) ++p;
                 if ( *p == '(' ) /* i18n_c( ctxt, txt ) */
                 {
-                    char* ctxt = NULL, *txt = NULL;
+                    p_String ctxt;
+                    p_String txt;
+                    if ( !p_string_init( &ctxt, "" )
+                        || !p_string_init( &txt, "" ))
+                        stop( "nomem" );
                     ++p;
                     if ( !get_string2( &p, &ctxt, &txt ))
+                    {
+                        p_string_fini( &ctxt );
+                        p_string_fini( &txt );
                         continue;
-                    fprintf( stdout, templ, ctxt, txt, "" );
-                    free( ctxt );
-                    free( txt );
+                    }
+                    fprintf( stdout, templ,
+                        (P_CHAR*)ctxt.data, (P_CHAR*)txt.data, "" );
+                    p_string_fini( &ctxt );
+                    p_string_fini( &txt );
                 }
                 else if ( *p == 'p' )
                 {
@@ -240,14 +235,26 @@ main( int argc, char* argv[] )
                     while ( isspace( *p )) ++p;
                     if ( *p == '(' ) /* i18n_cp( ctxt, txt, plural ) */
                     {
-                        char* ctxt = NULL, *txt = NULL, *plural = NULL;
+                        p_String ctxt;
+                        p_String txt;
+                        p_String plural;
+                        if ( !p_string_init( &ctxt, "" )
+                            || !p_string_init( &txt, "" )
+                            || !p_string_init( &plural, "" ))
+                            stop( "nomem" );
                         ++p;
                         if ( !get_string3( &p, &ctxt, &txt, &plural ))
+                        {
+                            p_string_fini( &ctxt );
+                            p_string_fini( &txt );
+                            p_string_fini( &plural );
                             continue;
-                        fprintf( stdout, templ, ctxt, txt, plural );
-                        free( ctxt );
-                        free( txt );
-                        free( plural );
+                        }
+                        fprintf( stdout, templ, (P_CHAR*)ctxt.data,
+                            (P_CHAR*)txt.data, (P_CHAR*)plural.data );
+                        p_string_fini( &ctxt );
+                        p_string_fini( &txt );
+                        p_string_fini( &plural );
                     }
                 }
                 else continue;
@@ -257,8 +264,10 @@ main( int argc, char* argv[] )
         else continue;
     }
 
-    if ( tmp )
-        free( tmp );
+    p_string_fini( &tmp );
+#ifndef P_NO_MEMPOOL
+    p_mempool_fini( &mp );
+#endif
     return EXIT_SUCCESS;
 }
 
