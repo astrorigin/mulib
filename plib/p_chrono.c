@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <p_chrono.h>
+#include "p_chrono.h"
 
 P_VOID
 p_tspec_plus_msec( struct timespec *ts,

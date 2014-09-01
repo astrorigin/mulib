@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <p_csv.h>
+#include "p_csv.h"
 
 P_VOID
 p_csv_init( p_CsvContext* csv,

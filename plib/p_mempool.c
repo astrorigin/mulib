@@ -18,10 +18,10 @@
 
 #ifndef P_NO_MEMPOOL
 
-#include <p_mempool.h>
+#include "p_mempool.h"
 
-#include <p_memlist.h>
-#include <p_sllist.h>
+#include "p_memlist.h"
+#include "p_sllist.h"
 
 #undef P_TRACE
 #if defined( P_TRACE_MODE ) && defined( P_TRACE_MEMPOOL )

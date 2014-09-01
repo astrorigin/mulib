@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <p_sllist.h>
+#include "p_sllist.h"
 
 P_SZ
 p_sllist_count( p_SlList* el )

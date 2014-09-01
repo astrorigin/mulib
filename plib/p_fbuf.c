@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <p_fbuf.h>
+#include "p_fbuf.h"
 
 P_VOID
 p_fbuf_init( p_FBuf* fbuf )

@@ -16,9 +16,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <p_string.h>
+#include "p_string.h"
 
-#include <p_mempool.h>
+#include "p_mempool.h"
 
 #undef P_TRACE
 #if defined( P_TRACE_MODE ) && defined( P_TRACE_STRING )

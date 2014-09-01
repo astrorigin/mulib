@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <p_g11n.h>
+#include "p_g11n.h"
 
 #include "p_vector.h"
 
