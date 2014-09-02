@@ -14,6 +14,12 @@ if ( P_FCGI_STDIO )
     add_definitions( -DP_FCGI_STDIO )
 endif()
 
+set( P_MAKE_TESTS off
+    CACHE BOOL "Compile tests" )
+if ( P_MAKE_TESTS )
+    set( CMAKE_BUILD_TYPE Debug )
+endif()
+
 set( P_NO_MEMPOOL off
     CACHE BOOL "Compile without mempool" )
 if ( P_NO_MEMPOOL )
@@ -65,6 +71,9 @@ if ( NOT P_FCGI_STDIO )
     add_executable( p_l10n p_l10n.c )
     target_link_libraries( p_l10n plib -pthread )
     install( TARGETS p_i18n p_l10n RUNTIME DESTINATION bin )
+    if ( P_MAKE_TESTS )
+        add_subdirectory( tests )
+    endif()
 else()
     add_library( plib_fcgi SHARED ${SRC} )
     install( TARGETS plib_fcgi LIBRARY DESTINATION lib )
