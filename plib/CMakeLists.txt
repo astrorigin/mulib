@@ -35,6 +35,7 @@ set( INC
     p_mutex.h
     p_sllist.h
     p_string.h
+    p_strnstr.h
     p_vdict.h
     p_vector.h
     )
@@ -51,6 +52,7 @@ set( SRC
     p_mempool.c
     p_sllist.c
     p_string.c
+    p_strnstr.c
     p_vdict.c
     p_vector.c
     )
