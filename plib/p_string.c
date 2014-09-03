@@ -124,8 +124,8 @@ p_string_cat_len( p_String* s,
         return s->data;
     if ( !p_vector_reserve( (p_Vector*)s, s->len + len ))
         return NULL;
-    memcpy( s->data + ( s->unit * s->len -1 ), content, len );
-    ((P_CHAR*)s->data)[ s->len + len ] = '\0';
+    memcpy( s->data + s->len - 1, content, len );
+    ((P_CHAR*)s->data)[ s->len + len - 1 ] = '\0';
     s->len += len;
     P_ASSERT( ((P_CHAR*)s->data)[ s->len -1 ] == '\0' )
     return s->data;
