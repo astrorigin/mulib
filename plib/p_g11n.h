@@ -104,26 +104,65 @@ P_EXPORT P_BOOL
 p_l10n_init( p_l10n_Translations* t );
 
 /**
- *
+ *  \brief Finalize a translations struct.
+ *  \param t The translations struct.
+ *  \param dofree Delete translation strings.
  */
 P_EXPORT P_VOID
-p_l10n_fini( p_l10n_Translations* t );
+p_l10n_fini( p_l10n_Translations* t,
+        const P_BOOL dofree );
 
+/**
+ *  \brief Add a translated element to a translations struct.
+ *  \param t Initialized Translations struct.
+ *  \param ctxt Context string, or NULL.
+ *  \param txt Text string, not NULL.
+ *  \param plural Plural string, or NULL.
+ *  \param tr1 Text translation, not NULL.
+ *  \param tr2 Plural translation, or NULL.
+ *  \return 1 on success, 0 if element is duplicated, -1 on error.
+ *
+ *  Translation strings are not copied.
+ */
+P_EXPORT P_INT8
+p_l10n_load( p_l10n_Translations* t,
+        const P_CHAR* ctxt,
+        const P_CHAR* txt,
+        const P_CHAR* plural,
+        const P_CHAR* tr1,
+        const P_CHAR* tr2 );
 
 /**
  *  \brief Load a vector of translation strings.
+ *  \param t Initialized Translations struct.
  *  \param strings The vector.
  *  \param len Size of vector, nulls included.
  *  \return P_TRUE on success.
  */
 P_EXPORT P_BOOL
-p_l10n_load( p_l10n_Translations* t,
+p_l10n_load_vector( p_l10n_Translations* t,
         const P_CHAR* strings,
         const P_SZ len );
 
+/**
+ *  \brief Load a file of translations strings (produced by p_i18n).
+ *  \param t Initialized translations struct.
+ *  \param f Opened stream.
+ *  \return P_TRUE on success.
+ *
+ *  Incomplete translations are not added to the struct.
+ *
+ *  \note Translations strings need to be freed.
+ */
+P_EXPORT P_BOOL
+p_l10n_load_file( p_l10n_Translations* t,
+        FILE* f );
+
 #ifndef NDEBUG
+
 P_EXPORT P_INT32
 p_l10n_test( P_VOID );
+
 #endif /* NDEBUG */
 
 #ifdef __cplusplus
