@@ -51,8 +51,9 @@ typedef p_Vector p_String;
  *  \param content String to copy (or NULL).
  *  \return P_TRUE, or P_FALSE on error.
  */
-#define p_string_new( s, content ) \
-        p_string_new_len( s, content, strlen( (const char*)content ))
+P_EXPORT P_BOOL
+p_string_new( p_String** s,
+        const P_CHAR* content );
 
 /**
  *  \brief Allocate for a new string with length.

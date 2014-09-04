@@ -28,6 +28,15 @@
 #endif
 
 P_BOOL
+p_string_new( p_String** s,
+        const P_CHAR* content )
+{
+    P_ASSERT( s )
+
+    return p_string_new_len( s, content, content ? strlen( content ) : 0 );
+}
+
+P_BOOL
 p_string_new_len( p_String** s,
         const P_CHAR* content,
         const P_SZ len )
