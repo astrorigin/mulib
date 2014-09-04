@@ -79,8 +79,9 @@ p_string_new_len( p_String** s,
  *  \param content String to copy (or NULL).
  *  \return P_TRUE, or P_FALSE on error.
  */
-#define p_string_init( s, content ) \
-        p_string_init_len( s, content, content ? strlen( (const char*)content ) : 0 )
+P_EXPORT P_BOOL
+p_string_init( p_String* s,
+        const P_CHAR* content );
 
 /**
  *  \brief Initialize a string with length.
