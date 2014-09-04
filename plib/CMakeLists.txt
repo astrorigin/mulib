@@ -42,6 +42,7 @@ set( INC
     p_sllist.h
     p_string.h
     p_strnstr.h
+    p_utf8.h
     p_vdict.h
     p_vector.h
     )
@@ -59,6 +60,7 @@ set( SRC
     p_sllist.c
     p_string.c
     p_strnstr.c
+    p_utf8.c
     p_vdict.c
     p_vector.c
     )

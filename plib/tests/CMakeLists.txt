@@ -10,6 +10,7 @@ add_executable( p_mempool_test p_mempool_test.c )
 add_executable( p_mempool_test_01 p_mempool_test_01.c )
 add_executable( p_mempool_test_02 p_mempool_test_02.c )
 add_executable( p_string_test p_string_test.c )
+add_executable( p_utf8_test p_utf8_test.c )
 add_executable( p_vector_test p_vector_test.c )
 
 target_link_libraries( p_btree_test plib -pthread )
@@ -20,6 +21,7 @@ target_link_libraries( p_mempool_test plib -pthread )
 target_link_libraries( p_mempool_test_01 plib -pthread )
 target_link_libraries( p_mempool_test_02 plib -pthread )
 target_link_libraries( p_string_test plib -pthread )
+target_link_libraries( p_utf8_test plib -pthread )
 target_link_libraries( p_vector_test plib -pthread )
 
 # vi: set fenc=utf-8 ff=unix et sw=4 ts=4 sts=4 :
