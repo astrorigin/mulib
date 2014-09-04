@@ -144,9 +144,13 @@ p_string_set_len( p_String* s,
 
 /**
  *  \brief Copy a string.
+ *  \param s The string.
+ *  \param s2 The string to copy.
+ *  \return Start of the string, or NULL on error.
  */
-#define p_string_copy( s1, s2 ) \
-        p_string_set_len( (s1), (const P_CHAR*)(s2)->data, (s2)->len -1 )
+P_EXPORT P_CHAR*
+p_string_copy( p_String* s,
+        const p_String* s2 );
 
 /**
  *  \brief Append data to a string.

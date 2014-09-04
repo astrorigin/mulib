@@ -125,6 +125,16 @@ p_string_set_len( p_String* s,
 }
 
 P_CHAR*
+p_string_copy( p_String* s,
+        const p_String* s2 )
+{
+    P_ASSERT( s )
+    P_ASSERT( s2 )
+
+    return p_string_set_len( s, (P_CHAR*) s2->data, s2->len - 1 );
+}
+
+P_CHAR*
 p_string_cat( p_String* s,
         const P_CHAR* content )
 {
