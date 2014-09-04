@@ -88,6 +88,15 @@ p_string_calc_space_fn( p_String* s,
 }
 
 P_CHAR*
+p_string_set( p_String* s,
+        const P_CHAR* content )
+{
+    P_ASSERT( s )
+
+    return p_string_set_len( s, content, content ? strlen( content ) : 0 );
+}
+
+P_CHAR*
 p_string_set_len( p_String* s,
         const P_CHAR* content,
         const P_SZ len )

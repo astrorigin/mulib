@@ -126,8 +126,9 @@ p_string_calc_space_fn( p_String*,
  *  \param content String to copy (or NULL).
  *  \return Start of the string, or NULL on error.
  */
-#define p_string_set( s, content ) \
-        p_string_set_len( (s), (content), (content) ? strlen( (const char*)(content) ) : 0 )
+P_EXPORT P_CHAR*
+p_string_set( p_String* s,
+        const P_CHAR* content );
 
 /**
  *  \brief Set string content with length.
