@@ -17,7 +17,9 @@ endif()
 set( P_MAKE_TESTS off
     CACHE BOOL "Compile tests" )
 if ( P_MAKE_TESTS )
-    set( CMAKE_BUILD_TYPE Debug )
+    if ( NOT ( CMAKE_BUILD_TYPE STREQUAL Debug ))
+        message( FATAL_ERROR "Tests must be made in Debug mode." )
+    endif()
 endif()
 
 set( P_NO_MEMPOOL off

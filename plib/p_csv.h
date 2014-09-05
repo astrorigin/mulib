@@ -131,15 +131,9 @@ p_csv_get_line( p_CsvContext* csv,
         const P_SZ limit,
         P_INT32* i );
 
-#ifndef NDBUG
-
-P_EXPORT P_INT32
-p_csv_test();
-
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* NDEBUG */
 #endif /* P_CSV_H */
 /* vi: set fenc=utf-8 ff=unix et sw=4 ts=4 sts=4 : */

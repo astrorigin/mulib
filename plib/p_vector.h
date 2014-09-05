@@ -183,9 +183,6 @@ p_vector_traverse2( p_Vector* v,
 P_EXPORT P_VOID
 p_vector_debug( const p_Vector* v );
 
-P_EXPORT P_INT32
-p_vector_test( P_VOID );
-
 #endif /* NDEBUG */
 
 #ifdef __cplusplus

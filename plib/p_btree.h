@@ -525,13 +525,6 @@ p_btree_node_debug( const p_BTNode* node );
 P_EXPORT P_VOID
 p_btree_debug( const p_BTNode* node );
 
-/**
- *  \brief Unittest for binary-tree module.
- *  \return 0 if all checks were ok.
- */
-P_EXPORT P_INT32
-p_btree_test( P_VOID );
-
 #endif /* NDEBUG */
 
 #ifdef __cplusplus

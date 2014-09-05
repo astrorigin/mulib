@@ -59,3 +59,4 @@ int main( int argc, char* argv [] )
     return 0;
 }
 
+/* vi: set fenc=utf-8 ff=unix et sw=4 ts=4 sts=4 : */

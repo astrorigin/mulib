@@ -233,13 +233,6 @@ p_mempool_purge_bucket( p_MemBucket* bucket,
 P_EXPORT P_VOID
 p_mempool_debug( const p_MemPool* pool );
 
-/**
- *  \brief Memory pool unittest
- *  \return 0 if all checks were ok.
- */
-P_EXPORT P_INT32
-p_mempool_test( P_VOID );
-
 #endif /* NDEBUG */
 
 #ifdef __cplusplus

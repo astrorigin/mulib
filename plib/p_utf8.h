@@ -65,13 +65,6 @@ p_utf8_encode( const P_INT32 c,
 P_EXPORT P_SZ
 p_utf8_strlen( const P_CHAR* s );
 
-#ifndef NDEBUG
-
-P_EXPORT P_INT32
-p_utf8_test( P_VOID );
-
-#endif
-
 #ifdef __cplusplus
 }
 #endif

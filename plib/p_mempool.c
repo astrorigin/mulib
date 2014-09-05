@@ -336,26 +336,6 @@ p_mempool_debug( const p_MemPool* mp )
     printf( "-- end mempool debug\n" );
 }
 
-P_INT32
-p_mempool_test( P_VOID )
-{
-    printf( "-- MEMPOOL -- test\n"
-            "-- sizeof( chunk ) = "P_SZ_FMT"\n"
-            "-- sizeof( bucket ) = "P_SZ_FMT"\n"
-            "-- sizeof( mempool ) = "P_SZ_FMT"\n",
-        sizeof( p_MemChunk ),
-        sizeof( p_MemBucket ),
-        sizeof( p_MemPool ) );
-
-    p_memlist_debug();
-    /* TODO find something here */
-    p_memlist_debug();
-
-    printf( "-- end mempool test\n" );
-    return 0;
-}
-
 #endif /* NDEBUG */
-
 #endif /* P_NO_MEMPOOL */
 /* vi: set fenc=utf-8 ff=unix et sw=4 ts=4 sts=4 : */

@@ -195,10 +195,7 @@ p_string_replace( p_String* s,
 #define p_string_debug( s ) \
         p_vector_debug( (p_Vector*)(s) )
 
-P_EXPORT P_INT32
-p_string_test( P_VOID );
-
-#endif
+#endif /* NDEBUG */
 
 #ifdef __cplusplus
 }

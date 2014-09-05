@@ -203,9 +203,6 @@ p_dict_node_fini( p_DictNode* nd );
 P_EXPORT P_VOID
 p_dict_debug( const p_Dict* d );
 
-P_EXPORT P_INT32
-p_dict_test( P_VOID );
-
 #endif /* NDEBUG */
 
 #ifdef __cplusplus

@@ -158,13 +158,6 @@ P_EXPORT P_BOOL
 p_l10n_load_file( p_l10n_Translations* t,
         FILE* f );
 
-#ifndef NDEBUG
-
-P_EXPORT P_INT32
-p_l10n_test( P_VOID );
-
-#endif /* NDEBUG */
-
 #ifdef __cplusplus
 }
 #endif
