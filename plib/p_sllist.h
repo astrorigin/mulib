@@ -102,6 +102,16 @@ struct _p_sllist_t
 P_EXPORT P_SZ
 p_sllist_count( p_SlList* el );
 
+/**
+ *  \brief Append an element to the list.
+ *  \param lst The list first element.
+ *  \param el The element to append.
+ *  \return Index of element inside the list.
+ */
+P_EXPORT P_SZ
+p_sllist_append( p_SlList** lst,
+        const p_SlList* el );
+
 #ifdef __cplusplus
 }
 #endif

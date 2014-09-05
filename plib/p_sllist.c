@@ -26,4 +26,25 @@ p_sllist_count( p_SlList* el )
     return i;
 }
 
-/* vim: set fenc=utf-8 ff=unix et sw=4 ts=4 sts=4 : */
+P_SZ
+p_sllist_append( p_SlList** lst,
+        const p_SlList* el )
+{
+    P_SZ i = 0;
+    p_SlList* p;
+    if ( !*lst )
+    {
+        *lst = (p_SlList*) el;
+        return 0;
+    }
+    p = *lst;
+    while ( p->next )
+    {
+        p = p->next;
+        ++i;
+    }
+    p->next = (p_SlList*) el;
+    return ++i;
+}
+
+/* vi: set fenc=utf-8 ff=unix et sw=4 ts=4 sts=4 : */
