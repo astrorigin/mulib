@@ -125,6 +125,52 @@ P_EXPORT P_BOOL
 p_shell_set_type( p_Shell* sh,
         const P_SHELLTYPE tp );
 
+/**
+ *  \typedef p_ShellElem
+ */
+typedef struct _p_shell_elem p_ShellElem;
+
+/**
+ *  \struct _p_shell_elem
+ */
+struct _p_shell_elem
+{
+    p_ShellElem*    next;
+    p_Shell         shell;
+};
+
+/**
+ *  \brief Allocate for a shell element.
+ */
+P_EXPORT P_BOOL
+p_shellelem_new( p_ShellElem** sh,
+        const P_SHELLTYPE tp );
+
+/**
+ *  \brief Deallocate a shell element.
+ */
+P_EXPORT P_VOID
+p_shellelem_delete( p_ShellElem** sh );
+
+/**
+ *
+ */
+P_EXPORT P_BOOL
+p_shellelem_init( p_ShellElem* sh,
+        const P_SHELLTYPE tp );
+
+/**
+ *  \brief Initialize a shell element.
+ */
+P_EXPORT P_VOID
+p_shellelem_fini( p_ShellElem* sh );
+
+/**
+ *  \brief Finalize a shell element.
+ */
+P_EXPORT P_VOID
+p_shelllist_delete( p_ShellElem* lst );
+
 #ifdef __cplusplus
 }
 #endif

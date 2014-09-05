@@ -226,4 +226,53 @@ p_shell_set_type( p_Shell* sh,
     return P_TRUE;
 }
 
+P_BOOL
+p_shellelem_new( p_ShellElem** sh,
+        const P_SHELLTYPE tp )
+{
+    P_ASSERT( sh )
+    if ( !( *sh = P_MALLOC( sizeof( p_ShellElem ))))
+        return P_FALSE;
+    return p_shellelem_init( *sh, tp );
+}
+
+P_VOID
+p_shellelem_delete( p_ShellElem** sh )
+{
+    P_ASSERT( sh )
+    p_shellelem_fini( *sh );
+    P_FREE( *sh, sizeof( p_ShellElem ));
+    *sh = NULL;
+}
+
+P_BOOL
+p_shellelem_init( p_ShellElem* sh,
+        const P_SHELLTYPE tp )
+{
+    P_ASSERT( sh )
+    sh->next = NULL;
+    return p_shell_init( &sh->shell, tp );
+}
+
+P_VOID
+p_shellelem_fini( p_ShellElem* sh )
+{
+    P_ASSERT( sh )
+    if ( sh->next )
+        sh->next = NULL;
+    p_shell_fini( &sh->shell );
+}
+
+P_VOID
+p_shelllist_delete( p_ShellElem* lst )
+{
+    p_ShellElem* el;
+    while ( lst )
+    {
+        el = lst->next;
+        p_shellelem_fini( lst );
+        lst = el;
+    }
+}
+
 /* vi: set fenc=utf-8 ff=unix et sw=4 ts=4 sts=4 : */
