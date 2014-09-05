@@ -41,6 +41,7 @@ set( INC
     p_memlist.h
     p_mempool.h
     p_mutex.h
+    p_shell.h
     p_sllist.h
     p_string.h
     p_strnstr.h
@@ -59,6 +60,7 @@ set( SRC
     p_llabs.c
     p_memlist.c
     p_mempool.c
+    p_shell.c
     p_sllist.c
     p_string.c
     p_strnstr.c
