@@ -32,6 +32,9 @@ p_sllist_append( p_SlList** lst,
 {
     P_SZ i = 0;
     p_SlList* p;
+
+    P_ASSERT( lst )
+
     if ( !*lst )
     {
         *lst = (p_SlList*) el;
@@ -45,6 +48,21 @@ p_sllist_append( p_SlList** lst,
     }
     p->next = (p_SlList*) el;
     return ++i;
+}
+
+p_SlList*
+p_sllist_at( const p_SlList* lst,
+        const P_SZ index )
+{
+    p_SlList* el = (p_SlList*) lst;
+    P_SZ cnt = 0;
+    while ( el )
+    {
+        if ( cnt++ == index )
+            return el;
+        el = el->next;
+    }
+    return NULL;
 }
 
 /* vi: set fenc=utf-8 ff=unix et sw=4 ts=4 sts=4 : */

@@ -112,6 +112,16 @@ P_EXPORT P_SZ
 p_sllist_append( p_SlList** lst,
         const p_SlList* el );
 
+/**
+ *  \brief Get the nth element of the list.
+ *  \param lst The list first element.
+ *  \param index Index searched.
+ *  \return Element found or NULL.
+ */
+P_EXPORT p_SlList*
+p_sllist_at( const p_SlList* lst,
+        const P_SZ index );
+
 #ifdef __cplusplus
 }
 #endif
