@@ -99,7 +99,7 @@ struct _p_sllist_t
  *  \param el The list.
  *  \return The count.
  */
-P_SZ
+P_EXPORT P_SZ
 p_sllist_count( p_SlList* el );
 
 #ifdef __cplusplus
