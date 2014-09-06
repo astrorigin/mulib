@@ -60,7 +60,6 @@ p_shell_init( p_Shell* sh,
     {
         if ( !p_shell_set_type( sh, tp ))
             return P_FALSE;
-        sh->type = tp;
     }
     return P_TRUE;
 }
@@ -223,6 +222,7 @@ p_shell_set_type( p_Shell* sh,
     default: /* dummy warning */
         break;
     }
+    sh->type = tp;
     return P_TRUE;
 }
 
