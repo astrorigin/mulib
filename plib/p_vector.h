@@ -48,6 +48,8 @@ struct _p_vector_t
     P_SZ    capacity;   /* size of data buffer */
     /* return requested size of data buffer (can be NULL) */
     P_SZ    (*calc_space_fn)( p_Vector* self, P_SZ len );
+    /* finalization function for members (can be NULL) */
+    P_VOID  (*finalize_fn)( P_PTR );
 };
 
 /**

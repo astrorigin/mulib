@@ -77,6 +77,7 @@ p_vector_init( p_Vector* v,
     v->unit = unit;
     v->capacity = 0;
     v->calc_space_fn = csfn;
+    v->finalize_fn = NULL;
 
     space_req = csfn ? (*csfn)( v, len ) : len * unit;
     if ( space_req )
@@ -105,6 +106,8 @@ p_vector_fini( p_Vector* v )
 
     if ( v->data )
     {
+        if ( v->finalize_fn )
+            p_vector_traverse( v, v->finalize_fn );
         if ( v->capacity )
             P_FREE( v->data, v->capacity );
         v->data = NULL;
@@ -113,6 +116,7 @@ p_vector_fini( p_Vector* v )
     v->unit = 0;
     v->capacity = 0;
     v->calc_space_fn = NULL;
+    v->finalize_fn = NULL;
 }
 
 P_SZ
