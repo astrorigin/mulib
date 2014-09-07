@@ -37,6 +37,7 @@ set( INC
     p_fbuf.h
     p_g11n.h
     p_h.h
+    p_json.h
     p_llabs.h
     p_memlist.h
     p_mempool.h
@@ -57,6 +58,7 @@ set( SRC
     p_dict.c
     p_fbuf.c
     p_g11n.c
+    p_json.c
     p_llabs.c
     p_memlist.c
     p_mempool.c
