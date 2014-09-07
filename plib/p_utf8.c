@@ -165,6 +165,22 @@ p_utf8_strlen( const P_CHAR* s )
                 }
             }
             else
+            if ( c >= -13 ) /* out of unicode range */
+            {
+                return (P_SZ) -1;
+            }
+            else
+            if ( c == -14 ) /* check out of unicode range */
+            {
+                if ( !( c = *p++ ) || !( c <= -113 )) /*|| !( c < -64 ))*/
+                    return (P_SZ) -1;
+                for ( i = 0; i < 2; ++i )
+                {
+                    if ( !( c = *p++ ) || !( c < -64 ))
+                        return (P_SZ) -1;
+                }
+            }
+            else
             {
                 for ( i = 0; i < 3; ++i )
                 {
