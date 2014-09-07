@@ -120,15 +120,9 @@ p_utf8_strlen( const P_CHAR* s )
         else
         if ( c >= -64 && c < -32 )
         {
-            if ( !( c = *p++ ) || !( c < -64 ))
+            if ( c == -64 ) /* overlong */
                 return (P_SZ) -1;
-            ++cnt;
-        }
-        else
-        if ( c >= -32 && c < -16 )
-        {
-            P_SZ i;
-            for ( i = 0; i < 2; ++i )
+            else
             {
                 if ( !( c = *p++ ) || !( c < -64 ))
                     return (P_SZ) -1;
@@ -136,13 +130,47 @@ p_utf8_strlen( const P_CHAR* s )
             ++cnt;
         }
         else
+        if ( c >= -32 && c < -16 )
+        {
+            if ( c == -32 ) /* check overlong */
+            {
+                if ( !( c = *p++ ) || !( c >= -96 ) || !( c < -64 ))
+                    return (P_SZ) -1;
+                if ( !( c = *p++ ) || !( c < -64 ))
+                    return (P_SZ) -1;
+            }
+            else
+            {
+                P_SZ i;
+                for ( i = 0; i < 2; ++i )
+                {
+                    if ( !( c = *p++ ) || !( c < -64 ))
+                        return (P_SZ) -1;
+                }
+            }
+            ++cnt;
+        }
+        else
         if ( c >= -16 && c < -8 )
         {
             P_SZ i;
-            for ( i = 0; i < 3; ++i )
+            if ( c == -16 ) /* check overlong */
             {
-                if ( !( c = *p++ ) || !( c < -64 ))
-                    return (P_SZ) -1;                
+                if ( !( c = *p++ ) || !( c >= -112 ) || !( c < -64 ))
+                    return (P_SZ) -1;
+                for ( i = 0; i < 2; ++i )
+                {
+                    if ( !( c = *p++ ) || !( c < -64 ))
+                        return (P_SZ) -1;
+                }
+            }
+            else
+            {
+                for ( i = 0; i < 3; ++i )
+                {
+                    if ( !( c = *p++ ) || !( c < -64 ))
+                        return (P_SZ) -1;
+                }
             }
             ++cnt;
         }

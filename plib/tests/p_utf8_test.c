@@ -47,7 +47,7 @@ p_utf8_test( P_VOID )
 
     /* Some latin-1 */
     P_ASSERT( p_utf8_octetnum( 0xE2 ) == 2 )
-    printf( "French 'â': %s\n", p_utf8_encode( 0xE2, buf ));
+    printf( "Latin-1 'â': %s\n", p_utf8_encode( 0xE2, buf ));
     showbitsstr( buf );
     P_ASSERT( p_utf8_strlen( buf ) == 1 )
 
@@ -57,9 +57,9 @@ p_utf8_test( P_VOID )
     showbitsstr( buf );
     P_ASSERT( p_utf8_strlen( buf ) == 1 )
 
-    /* samaritan */
-    P_ASSERT( p_utf8_octetnum( 0x800 ) == 3 )
-    printf( "Samaritan alaf: %s\n", p_utf8_encode( 0x800, buf ));
+    /* euro */
+    P_ASSERT( p_utf8_octetnum( 0x20AC ) == 3 )
+    printf( "Euro: %s\n", p_utf8_encode( 0x20AC, buf ));
     showbitsstr( buf );
     P_ASSERT( p_utf8_strlen( buf ) == 1 )
 
