@@ -101,6 +101,12 @@ P_EXPORT P_VOID
 p_shell_delete( p_Shell** sh );
 
 /**
+ *  \brief Delete a shell passed by value.
+ */
+P_EXPORT P_VOID
+p_shell_delete_by_val( p_Shell* sh );
+
+/**
  *  \brief Initialize a shell.
  *
  *  Vectors are special beasts that need to be initialized after function call.

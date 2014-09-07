@@ -48,6 +48,13 @@ p_shell_delete( p_Shell** sh )
     *sh = NULL;
 }
 
+P_VOID
+p_shell_delete_by_val( p_Shell* sh )
+{
+    P_ASSERT( sh )
+    p_shell_delete( &sh );
+}
+
 P_BOOL
 p_shell_init( p_Shell* sh,
         const P_SHELLTYPE tp )
