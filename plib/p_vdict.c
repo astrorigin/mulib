@@ -33,7 +33,7 @@ p_vdict_fini( p_VDict* d )
     P_ASSERT( d )
     P_TRACE( "-- VDICT -- fini ("P_PTR_FMT")\n", (P_PTR)d )
     p_btree_traverse( (p_BTree*)d,
-        (P_VOID(*)(P_PTR,P_PTR))&p_vdict_node_list_delete, NULL );
+        (P_VOID(*)(P_PTR))&p_vdict_node_list_delete );
     p_btree_fini( (p_BTree*)d );
 }
 
@@ -228,8 +228,7 @@ p_vdict_node_delete( p_VDictNode** nd )
 }
 
 P_VOID
-p_vdict_node_list_delete( p_VDictNode* nd,
-        P_PTR userdata )
+p_vdict_node_list_delete( p_VDictNode* nd )
 {
     p_VDictNode* next;
     P_ASSERT( nd )
@@ -239,7 +238,6 @@ p_vdict_node_list_delete( p_VDictNode* nd,
         p_vdict_node_delete( &nd );
         nd = next;
     }
-    P_UNUSED( userdata );
 }
 
 P_BOOL

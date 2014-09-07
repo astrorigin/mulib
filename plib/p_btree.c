@@ -72,6 +72,7 @@ p_btree_init( p_BTree* bt,
     bt->root = NULL;
     bt->mallocdoer = mallocdoer ? mallocdoer : &p_btree_mallocdoer;
     bt->freedoer = freedoer ? freedoer : &p_btree_freedoer;
+    bt->finalize_fn = NULL;
     return P_TRUE;
 }
 
@@ -79,9 +80,12 @@ P_VOID
 p_btree_fini( p_BTree* bt )
 {
     P_TRACE( "-- BTREE -- fini ("P_PTR_FMT")\n", (P_PTR)bt )
+    if ( bt->finalize_fn )
+        p_btree_traverse( bt, bt->finalize_fn );
     p_btree_node_delete( &bt->root, bt->freedoer );
     bt->mallocdoer = NULL;
     bt->freedoer = NULL;
+    bt->finalize_fn = NULL;
 }
 
 P_BOOL
@@ -436,6 +440,23 @@ p_btree_node_num_levels( const p_BTNode* bt )
 
 P_VOID
 p_btree_node_traverse( p_BTNode* bt,
+        P_VOID (*func)( P_PTR ) )
+{
+    if ( !bt )
+        return;
+
+    if ( bt->less )
+        p_btree_node_traverse( bt->less, func );
+
+    if ( bt->more )
+        p_btree_node_traverse( bt->more, func );
+
+    if ( bt->val )
+        (*func)( bt->val );
+}
+
+P_VOID
+p_btree_node_traverse2( p_BTNode* bt,
         P_VOID (*func)( P_PTR, P_PTR ),
         P_PTR userdata )
 {
@@ -443,10 +464,10 @@ p_btree_node_traverse( p_BTNode* bt,
         return;
 
     if ( bt->less )
-        p_btree_node_traverse( bt->less, func, userdata );
+        p_btree_node_traverse2( bt->less, func, userdata );
 
     if ( bt->more )
-        p_btree_node_traverse( bt->more, func, userdata );
+        p_btree_node_traverse2( bt->more, func, userdata );
 
     if ( bt->val )
         (*func)( bt->val, userdata );

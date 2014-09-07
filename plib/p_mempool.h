@@ -175,8 +175,7 @@ p_mempool_fini( p_MemPool* pool );
  *  \param bucket The bucket.
  */
 P_EXPORT P_VOID
-_p_mempool_buckets_fini( P_PTR bucket,
-        P_PTR userdata );
+_p_mempool_buckets_fini( P_PTR bucket );
 
 /**
  *  \brief Let the memory pool find some memory to use.
@@ -221,8 +220,7 @@ p_mempool_purge( p_MemPool* mp,
  *  \param bucket The memory bucket.
  */
 P_EXPORT P_VOID
-p_mempool_purge_bucket( p_MemBucket* bucket,
-        P_PTR userdata );
+p_mempool_purge_bucket( p_MemBucket* bucket );
 
 #ifndef NDEBUG
 

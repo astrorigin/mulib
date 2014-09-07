@@ -180,8 +180,7 @@ p_vdict_node_delete( p_VDictNode** nd );
  *  \brief Deallocate a list of vdict nodes.
  */
 P_EXPORT P_VOID
-p_vdict_node_list_delete( p_VDictNode* nd,
-        P_PTR userdata );
+p_vdict_node_list_delete( p_VDictNode* nd );
 
 /**
  *  \brief Initialize a vdict node.

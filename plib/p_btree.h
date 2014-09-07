@@ -71,6 +71,7 @@ struct _p_btree_t
     p_BTNode*   root;
     P_PTR       (*mallocdoer)( P_SZ );
     P_VOID      (*freedoer)( P_PTR );
+    P_VOID      (*finalize_fn)( P_PTR );
 };
 
 /**
@@ -327,17 +328,37 @@ p_btree_node_num_levels( const p_BTNode* node );
  */
 P_EXPORT P_VOID
 p_btree_node_traverse( p_BTNode* node,
-        P_VOID (*func)( P_PTR, P_PTR ),
-        P_PTR userdata );
+        P_VOID (*func)( P_PTR ) );
 
 /**
  *  \brief Traverse a btree and apply function to the values.
  *  \param bt The binary tree.
  *  \param func The function to apply.
- *  \see p_btree_node_traverse
+ *  \see p_btree_node_traverse().
  */
-#define p_btree_traverse( bt, func, udata ) \
-        p_btree_node_traverse( (bt)->root, (func), (udata) )
+#define p_btree_traverse( bt, func ) \
+        p_btree_node_traverse( (bt)->root, (func) )
+
+/**
+ *  \brief Traverse the nodes and apply function to the values (userdata version).
+ *  \param node The starting (root) node.
+ *  \param func The function to apply.
+ *  \param userdata Pointer passed to function.
+ */
+P_EXPORT P_VOID
+p_btree_node_traverse2( p_BTNode* node,
+        P_VOID (*func)( P_PTR, P_PTR ),
+        P_PTR userdata );
+
+/**
+ *  \brief Traverse a btree and apply function to the values (userdata version).
+ *  \param bt The binary tree.
+ *  \param func The function to apply.
+ *  \param userdata Pointer passed to function.
+ *  \see p_btree_node_traverse2().
+ */
+#define p_btree_traverse2( bt, func, udata ) \
+        p_btree_node_traverse2( (bt)->root, (func), (udata) )
 
 /**
  *  \brief Get root node.

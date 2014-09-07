@@ -90,13 +90,12 @@ p_mempool_fini( p_MemPool* mp )
 {
     P_TRACE( "-- MEMPOOL -- fini ("P_PTR_FMT")\n", mp )
     P_ASSERT( mp )
-    p_btree_traverse( &mp->buckets, &_p_mempool_buckets_fini, NULL );
+    p_btree_traverse( &mp->buckets, &_p_mempool_buckets_fini );
     p_btree_fini( &mp->buckets );
 }
 
 P_VOID
-_p_mempool_buckets_fini( P_PTR bucket,
-        P_PTR userdata )
+_p_mempool_buckets_fini( P_PTR bucket )
 {
     p_MemChunk* nxt;
     p_MemChunk* chk = ((p_MemBucket*)bucket)->alive;
@@ -114,7 +113,6 @@ _p_mempool_buckets_fini( P_PTR bucket,
         chk = nxt;
     }
     _P_FREE( bucket );
-    P_UNUSED( userdata );
 }
 
 P_PTR
@@ -259,16 +257,15 @@ p_mempool_purge( p_MemPool* mp,
             p_btree_get( &mp->buckets, bucket );
         if ( !bkt )
             return;
-        p_mempool_purge_bucket( bkt, NULL );
+        p_mempool_purge_bucket( bkt );
     }
     else
         p_btree_traverse( &mp->buckets,
-                (P_VOID(*)(P_PTR,P_PTR))&p_mempool_purge_bucket, NULL );
+                (P_VOID(*)(P_PTR))&p_mempool_purge_bucket );
 }
 
 P_VOID
-p_mempool_purge_bucket( p_MemBucket* bkt,
-        P_PTR userdata )
+p_mempool_purge_bucket( p_MemBucket* bkt )
 {
     P_ASSERT( bkt )
 
@@ -285,7 +282,6 @@ p_mempool_purge_bucket( p_MemBucket* bkt,
         while ( chk );
         bkt->trash = NULL;
     }
-    P_UNUSED( userdata );
 }
 
 #ifndef NDEBUG

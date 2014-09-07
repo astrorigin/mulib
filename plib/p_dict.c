@@ -32,8 +32,13 @@ p_dict_fini( p_Dict* d )
 {
     P_ASSERT( d )
     P_TRACE( "-- DICT -- fini ("P_PTR_FMT")\n", (P_PTR)d )
+    if ( d->finalize_fn )
+    {
+        p_dict_traverse( d, d->finalize_fn );
+        d->finalize_fn = NULL;
+    }
     p_btree_traverse( (p_BTree*)d,
-        (P_VOID(*)(P_PTR,P_PTR))&p_dict_node_list_delete, NULL );
+        (P_VOID(*)(P_PTR))&p_dict_node_list_delete );
     p_btree_fini( (p_BTree*)d );
 }
 
@@ -283,8 +288,7 @@ p_dict_node_delete( p_DictNode** nd )
 }
 
 P_VOID
-p_dict_node_list_delete( p_DictNode* nd,
-        P_PTR userdata )
+p_dict_node_list_delete( p_DictNode* nd )
 {
     p_DictNode* next;
     P_ASSERT( nd )
@@ -294,7 +298,6 @@ p_dict_node_list_delete( p_DictNode* nd,
         p_dict_node_delete( &nd );
         nd = next;
     }
-    P_UNUSED( userdata );
 }
 
 P_BOOL

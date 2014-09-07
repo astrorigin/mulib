@@ -180,8 +180,7 @@ p_dict_node_delete( p_DictNode** nd );
  *  \brief Deallocate a list of dict nodes.
  */
 P_EXPORT P_VOID
-p_dict_node_list_delete( p_DictNode* nd,
-        P_PTR userdata );
+p_dict_node_list_delete( p_DictNode* nd );
 
 /**
  *  \brief Initialize a dict node.
