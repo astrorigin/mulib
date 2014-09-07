@@ -120,7 +120,7 @@ p_utf8_strlen( const P_CHAR* s )
         else
         if ( c >= -64 && c < -32 )
         {
-            if ( c == -64 ) /* overlong */
+            if ( c < -62 ) /* overlong */
                 return (P_SZ) -1;
             else
             {
