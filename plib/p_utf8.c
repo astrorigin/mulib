@@ -225,4 +225,39 @@ p_utf8_get_char( const P_CHAR* s,
     return P_TRUE;
 }
 
+P_CHAR*
+p_utf8_next_char( const P_CHAR* s )
+{
+    P_CHAR c;
+
+    P_ASSERT( s )
+
+    if ( !( c = *s ))
+        return NULL;
+    if ( c >= 0 )
+    {
+        if ( *( s + 1 ))
+            return (P_CHAR*) s + 1;
+    }
+    else
+    if ( c >= -64 && c < -32 )
+    {
+        if ( *( s + 2 ))
+            return (P_CHAR*) s + 2;
+    }
+    else
+    if ( c >= -32 && c < -16 )
+    {
+        if ( *( s + 3 ))
+            return (P_CHAR*) s + 3;
+    }
+    else
+    if ( c >= -16 && c < -8 )
+    {
+        if ( *( s + 4 ))
+            return (P_CHAR*) s + 4;
+    }
+    return NULL;
+}
+
 /* vi: set fenc=utf-8 ff=unix et sw=4 ts=4 sts=4 : */

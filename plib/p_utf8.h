@@ -77,6 +77,16 @@ P_EXPORT P_BOOL
 p_utf8_get_char( const P_CHAR* s,
         P_CHAR* buf );
 
+/**
+ *  \brief Go to the next non-null utf-8 character sequence.
+ *  \param s Start of an utf-8 character sequence.
+ *  \return Next first char of an utf-8 character sequence, or NULL.
+ *
+ *  No in-depth utf-8 validity check is made.
+ */
+P_EXPORT P_CHAR*
+p_utf8_next_char( const P_CHAR* s );
+
 #ifdef __cplusplus
 }
 #endif
