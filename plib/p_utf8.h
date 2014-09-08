@@ -65,6 +65,18 @@ p_utf8_encode( const P_INT32 c,
 P_EXPORT P_SZ
 p_utf8_strlen( const P_CHAR* s );
 
+/**
+ *  \brief Extract non-null utf-8 character sequence.
+ *  \param s Start of character.
+ *  \param buf Buffer for 5 chars.
+ *  \return P_TRUE on success.
+ *
+ *  No in-depth utf-8 validity check is made.
+ */
+P_EXPORT P_BOOL
+p_utf8_get_char( const P_CHAR* s,
+        P_CHAR* buf );
+
 #ifdef __cplusplus
 }
 #endif

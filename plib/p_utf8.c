@@ -196,4 +196,33 @@ p_utf8_strlen( const P_CHAR* s )
     return cnt;
 }
 
+P_BOOL
+p_utf8_get_char( const P_CHAR* s,
+        P_CHAR* buf )
+{
+    P_CHAR c;
+
+    P_ASSERT( s )
+    P_ASSERT( buf )
+
+    memset( buf, 0, 5 );
+
+    if ( !( c = *s ))
+        return P_FALSE;
+    if ( c >= 0 )
+        buf[0] = c;
+    else
+    if ( c >= -64 && c < -32 )
+        memcpy( buf, s, 2 );
+    else
+    if ( c >= -32 && c < -16 )
+        memcpy( buf, s, 3 );
+    else
+    if ( c >= -16 && c < -8 )
+        memcpy( buf, s, 4 );
+    else
+        return P_FALSE;
+    return P_TRUE;
+}
+
 /* vi: set fenc=utf-8 ff=unix et sw=4 ts=4 sts=4 : */
