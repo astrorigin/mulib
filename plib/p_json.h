@@ -55,6 +55,7 @@ extern "C" {
  *  \param nil End of string.
  *  \param null Initialized shell (type null) to store what is found.
  *  \param next Where scanner has stopped.
+ *  \return P_TRUE on success.
  */
 P_EXPORT P_BOOL
 p_json( P_CHAR* s,
@@ -75,7 +76,12 @@ p_json_scan( P_CHAR* s,
         P_CHAR** next );
 
 /**
- *
+ *  \brief Scan json object.
+ *  \param s String to scan.
+ *  \param nil End of string.
+ *  \param dict Initialized shell (type dict) to store the object.
+ *  \param next Where scanner has stopped.
+ *  \return P_TRUE on success.
  */
 P_EXPORT P_BOOL
 p_json_scan_object( P_CHAR* s,
@@ -84,7 +90,12 @@ p_json_scan_object( P_CHAR* s,
         P_CHAR** next );
 
 /**
- *
+ *  \brief Scan json array.
+ *  \param s String to scan.
+ *  \param nil End of string.
+ *  \param arr Initialized shell (type vector) to store the array.
+ *  \param next Where scanner has stopped.
+ *  \return P_TRUE on success.
  */
 P_EXPORT P_BOOL
 p_json_scan_array( P_CHAR* s,
@@ -93,7 +104,12 @@ p_json_scan_array( P_CHAR* s,
         P_CHAR** next );
 
 /**
- *
+ *  \brief Scan json value.
+ *  \param s String to scan.
+ *  \param nil End of string.
+ *  \param shell Initialized shell (type null) to store the value.
+ *  \param next Where scanner has stopped.
+ *  \return P_TRUE on success.
  */
 P_EXPORT P_BOOL
 p_json_scan_value( P_CHAR* s,
@@ -108,6 +124,8 @@ p_json_scan_value( P_CHAR* s,
  *  \param str Initialized shell (type string) to store the decoded json string (or NULL).
  *  \param next Where scanner has stopped.
  *  \return P_TRUE on success.
+ *
+ *  A more in-depth check should be made about utf-8 validity of the string.
  */
 P_EXPORT P_BOOL
 p_json_scan_string( P_CHAR* s,
