@@ -260,4 +260,58 @@ p_utf8_next_char( const P_CHAR* s )
     return NULL;
 }
 
+P_BOOL
+p_utf8_decode( P_CHAR* s,
+        P_INT32* i )
+{
+    P_CHAR c;
+
+    P_ASSERT( s )
+
+    *i = 0;
+    if ( !( c = *s++ ))
+        return P_TRUE;
+    else
+    if ( c >= 0 )
+    {
+        *i |= c;
+    }
+    else
+    if ( c >= -64 && c < -32 )
+    {
+        *i |= ((int)( c ^ -64 )) << 6;
+        if ( !( c = *s ) || !( c < -64 ))
+            return P_FALSE;
+        *i |= c ^ -128;
+    }
+    else
+    if ( c >= -32 && c < -16 )
+    {
+        *i |= ((int)( c ^ -32 )) << 12;
+        if ( !( c = *s++ ) || !( c < -64 ))
+            return P_FALSE;
+        *i |= ((int)( c ^ -128 )) << 6;
+        if ( !( c = *s ) || !( c < -64 ))
+            return P_FALSE;
+        *i |= c ^ -128;
+    }
+    else
+    if ( c >= -16 && c < -8 )
+    {
+        *i |= ((int)( c ^ -16 )) << 18;
+        if ( !( c = *s++ ) || !( c < -64 ))
+            return P_FALSE;
+        *i |= ((int)( c ^ -128 )) << 12;
+        if ( !( c = *s++ ) || !( c < -64 ))
+            return P_FALSE;
+        *i |= ((int)( c ^ -128 )) << 6;
+        if ( !( c = *s ) || !( c < -64 ))
+            return P_FALSE;
+        *i |= c ^ -128;
+    }
+    else
+        return P_FALSE;
+    return P_TRUE;
+}
+
 /* vi: set fenc=utf-8 ff=unix et sw=4 ts=4 sts=4 : */

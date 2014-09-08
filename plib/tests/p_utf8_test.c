@@ -35,6 +35,7 @@ P_INT32
 p_utf8_test( P_VOID )
 {
     char buf[5];
+    P_INT32 i;
 
     P_ASSERT( sizeof( char ) == 1 )
     P_ASSERT( sizeof( int ) == 4 )
@@ -44,30 +45,40 @@ p_utf8_test( P_VOID )
     printf( "ASCII 'E': %s\n", p_utf8_encode( 0x45, buf ));
     showbitsstr( buf );
     P_ASSERT( p_utf8_strlen( buf ) == 1 )
+    P_ASSERT( p_utf8_decode( buf, &i ))
+    P_ASSERT( i == 0x45 )
 
     /* Some latin-1 */
     P_ASSERT( p_utf8_octetnum( 0xE2 ) == 2 )
     printf( "Latin-1 'â': %s\n", p_utf8_encode( 0xE2, buf ));
     showbitsstr( buf );
     P_ASSERT( p_utf8_strlen( buf ) == 1 )
+    P_ASSERT( p_utf8_decode( buf, &i ))
+    P_ASSERT( i == 0xE2 )
 
     /* hebrew */
     P_ASSERT( p_utf8_octetnum( 0x5D0 ) == 2 )
     printf( "Hebrew aleph: %s\n", p_utf8_encode( 0x5D0, buf ));
     showbitsstr( buf );
     P_ASSERT( p_utf8_strlen( buf ) == 1 )
+    P_ASSERT( p_utf8_decode( buf, &i ))
+    P_ASSERT( i == 0x5D0 )
 
     /* euro */
     P_ASSERT( p_utf8_octetnum( 0x20AC ) == 3 )
     printf( "Euro: %s\n", p_utf8_encode( 0x20AC, buf ));
     showbitsstr( buf );
     P_ASSERT( p_utf8_strlen( buf ) == 1 )
+    P_ASSERT( p_utf8_decode( buf, &i ))
+    P_ASSERT( i == 0x20AC )
 
     /* Linear b syllabe KA */
     P_ASSERT( p_utf8_octetnum( 0x1000F ) == 4 )
     printf( "Syllabe KA: %s\n", p_utf8_encode( 0x1000F, buf ));
     showbitsstr( buf );
     P_ASSERT( p_utf8_strlen( buf ) == 1 )
+    P_ASSERT( p_utf8_decode( buf, &i ))
+    P_ASSERT( i == 0x1000F )
 
     return 0;
 }

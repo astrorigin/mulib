@@ -87,6 +87,18 @@ p_utf8_get_char( const P_CHAR* s,
 P_EXPORT P_CHAR*
 p_utf8_next_char( const P_CHAR* s );
 
+/**
+ *  \brief Decode an utf-8 character sequence.
+ *  \param s Start of an utf-8 character sequence.
+ *  \param i Unicode character number.
+ *  \return P_TRUE on success.
+ *
+ *  No in-depth utf-8 validity check is made.
+ */
+P_EXPORT P_BOOL
+p_utf8_decode( P_CHAR* s,
+        P_INT32* i );
+
 #ifdef __cplusplus
 }
 #endif
