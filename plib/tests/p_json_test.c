@@ -8,7 +8,8 @@ const P_CHAR txt[] =
 "\"varname\": 123.321,\n"
 "\"testing\": false,\n"
 "\"name\": \"Olga\",\n"
-"\"age\": 32\n"
+"\"age\": 32,\n"
+"\"table\": [ 1,2,3 ]\n"
 "}";
 
 P_INT32
@@ -19,7 +20,7 @@ p_json_test( P_VOID )
 #endif
     const P_CHAR* nil = strchr( txt, '\0' );
     P_CHAR* p = (P_CHAR*) txt;
-    p_Shell shell, *sh;
+    p_Shell shell, *sh, *sh2;
     p_String jstring;
 
 #ifndef P_NO_MEMPOOL
@@ -46,6 +47,12 @@ p_json_test( P_VOID )
     P_ASSERT( sh = p_dict_get( (p_Dict*)shell.p, "age" ))
     P_ASSERT( sh->type == P_SHELLTYPE_INT32 )
     P_ASSERT( *(P_INT32*)sh->p == 32 )
+
+    P_ASSERT( sh = p_dict_get( (p_Dict*)shell.p, "table" ))
+    P_ASSERT( sh->type = P_SHELLTYPE_VECTOR )
+    P_ASSERT( sh2 = (p_Shell*) p_vector_get( (p_Vector*)sh->p, 1 ))
+    P_ASSERT( sh2->type == P_SHELLTYPE_INT32 )
+    P_ASSERT( *(P_INT32*)sh2->p == 2 )
 
     p_shell_fini( &shell );
 
