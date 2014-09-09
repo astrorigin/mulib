@@ -14,6 +14,9 @@ if ( P_FCGI_STDIO )
     add_definitions( -DP_FCGI_STDIO )
 endif()
 
+set( P_MAKE_STATIC off
+    CACHE BOOL "Make static archive library" )
+
 set( P_MAKE_TESTS off
     CACHE BOOL "Compile tests" )
 if ( P_MAKE_TESTS )
@@ -72,6 +75,10 @@ set( SRC
     )
 
 if ( NOT P_FCGI_STDIO )
+    if ( P_MAKE_STATIC )
+        add_library( plib_s STATIC ${SRC} )
+        install( TARGETS plib_s LIBRARY DESTINATION lib )
+    endif()
     add_library( plib SHARED ${SRC} )
     install( TARGETS plib LIBRARY DESTINATION lib )
     add_executable( p_i18n p_i18n.c )
@@ -83,6 +90,10 @@ if ( NOT P_FCGI_STDIO )
         add_subdirectory( tests )
     endif()
 else()
+    if ( P_MAKE_STATIC )
+        add_library( plib_fcgi_s STATIC ${SRC} )
+        install( TARGETS plib_fcgi_s LIBRARY DESTINATION lib )
+    endif()
     add_library( plib_fcgi SHARED ${SRC} )
     install( TARGETS plib_fcgi LIBRARY DESTINATION lib )
 endif()
