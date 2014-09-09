@@ -31,7 +31,7 @@ endif()
 set( INC
     p_btree.h
     p_chrono.h
-    p_csv.h
+    #p_csv.h
     p_dict.h
     p_dllist.h
     p_fbuf.h
@@ -54,7 +54,7 @@ set( INC
 set( SRC
     p_btree.c
     p_chrono.c
-    p_csv.c
+    #p_csv.c
     p_dict.c
     p_fbuf.c
     p_g11n.c

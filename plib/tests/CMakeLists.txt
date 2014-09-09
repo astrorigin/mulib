@@ -3,7 +3,7 @@
 include_directories( BEFORE .. )
 
 add_executable( p_btree_test p_btree_test.c )
-add_executable( p_csv_test p_csv_test.c )
+#add_executable( p_csv_test p_csv_test.c )
 add_executable( p_dict_test p_dict_test.c )
 add_executable( p_g11n_test p_g11n_test.c )
 add_executable( p_json_test p_json_test.c )
@@ -16,7 +16,7 @@ add_executable( p_utf8_test p_utf8_test.c )
 add_executable( p_vector_test p_vector_test.c )
 
 target_link_libraries( p_btree_test plib -pthread )
-target_link_libraries( p_csv_test plib -pthread )
+#target_link_libraries( p_csv_test plib -pthread )
 target_link_libraries( p_dict_test plib -pthread )
 target_link_libraries( p_g11n_test plib -pthread )
 target_link_libraries( p_json_test plib -pthread )
