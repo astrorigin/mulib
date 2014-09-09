@@ -20,6 +20,7 @@ p_json_test( P_VOID )
     const P_CHAR* nil = strchr( txt, '\0' );
     P_CHAR* p = (P_CHAR*) txt;
     p_Shell shell, *sh;
+    p_String jstring;
 
 #ifndef P_NO_MEMPOOL
     P_ASSERT( p_mempool_init( &mp, 0 ))
@@ -47,6 +48,16 @@ p_json_test( P_VOID )
     P_ASSERT( *(P_INT32*)sh->p == 32 )
 
     p_shell_fini( &shell );
+
+    P_ASSERT( p_string_init( &jstring, NULL ))
+
+    P_ASSERT( p_json_make_string( "Hello \"World\"", &jstring, P_FALSE ))
+    P_ASSERT( !strcmp( (P_CHAR*)jstring.data, "\"Hello \\\"World\\\"\"" ))
+
+    P_ASSERT( p_json_make_string( "Hello \"ASCïï\"", &jstring, P_TRUE ))
+    P_ASSERT( !strcmp( (P_CHAR*)jstring.data, "\"Hello \\\"ASC\\u00EF\\u00EF\\\"\"" ))
+
+    p_string_fini( &jstring );
 #ifndef P_NO_MEMPOOL
     p_mempool_debug( &mp );
     p_mempool_fini( &mp );

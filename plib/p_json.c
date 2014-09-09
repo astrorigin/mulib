@@ -627,4 +627,102 @@ p_json_scan_number( P_CHAR* s,
     return P_TRUE;
 }
 
+P_BOOL
+p_json_make_string( P_CHAR* s,
+        p_String* jstring,
+        const P_BOOL ascii_only )
+{
+    P_CHAR buf[5];
+    P_SZ sz;
+
+    P_ASSERT( s )
+    P_ASSERT( jstring )
+
+    if ( !p_string_set_len( jstring, "\"", 1 ))
+        return P_FALSE;
+
+    while ( s && p_utf8_get_char( s, buf ))
+    {
+        switch ( ( sz = strlen( buf )))
+        {
+        case 0: /* not reached */
+            return P_FALSE;
+        case 1: /* ascii */
+        {
+            if ( iscntrl( *buf ))
+            {
+                P_INT32 i;
+                P_CHAR u[5];
+                if ( !p_string_cat_len( jstring, "\\u", 2 )
+                    || !p_utf8_decode( buf, &i )
+                    || sprintf( u, "%4.4X", i ) != 4
+                    || !p_string_cat_len( jstring, u, 4 ))
+                    return P_FALSE;
+                break;
+            }
+            switch ( *buf )
+            {
+            case '"':
+                if ( !p_string_cat_len( jstring, "\\\"", 2 ))
+                    return P_FALSE;
+                break;
+            case '\\':
+                if ( !p_string_cat_len( jstring, "\\\\", 2 ))
+                    return P_FALSE;
+                break;
+            case '/':
+                if ( !p_string_cat_len( jstring, "\\/", 2 ))
+                    return P_FALSE;
+                break;
+            case '\b':
+                if ( !p_string_cat_len( jstring, "\\b", 2 ))
+                    return P_FALSE;
+                break;
+            case '\f':
+                if ( !p_string_cat_len( jstring, "\\f", 2 ))
+                    return P_FALSE;
+                break;
+            case '\n':
+                if ( !p_string_cat_len( jstring, "\\n", 2 ))
+                    return P_FALSE;
+                break;
+            case '\r':
+                if ( !p_string_cat_len( jstring, "\\r", 2 ))
+                    return P_FALSE;
+                break;
+            case '\t':
+                if ( !p_string_cat_len( jstring, "\\t", 2 ))
+                    return P_FALSE;
+                break;
+            default:
+                if ( !p_string_cat_len( jstring, buf, 1 ))
+                    return P_FALSE;
+            }
+            break;
+        }
+        default: /* utf-8 sequence */
+            if ( ascii_only )
+            {
+                P_INT32 i;
+                P_CHAR u[5];
+                if ( !p_string_cat_len( jstring, "\\u", 2 )
+                    || !p_utf8_decode( buf, &i )
+                    || sprintf( u, "%4.4X", i ) != 4
+                    || !p_string_cat_len( jstring, u, 4 ))
+                    return P_FALSE;
+            }
+            else
+            {
+                if ( !p_string_cat_len( jstring, buf, sz ))
+                    return P_FALSE;
+            }
+            break;
+        }
+        s = p_utf8_next_char( s );
+    }
+    if ( !p_string_cat_len( jstring, "\"", 1 ))
+        return P_FALSE;
+    return P_TRUE;
+}
+
 /* vi: set fenc=utf-8 ff=unix et sw=4 ts=4 sts=4 : */

@@ -147,6 +147,20 @@ p_json_scan_number( P_CHAR* s,
         p_Shell* shell,
         P_CHAR** next );
 
+/**
+ *  \brief Produce a json string from an utf-8 string.
+ *  \param s The string to encode.
+ *  \param jstring The json string.
+ *  \param ascii_only Produce a pure ascii string.
+ *  \return P_TRUE on success.
+ *
+ *  The result string is enclosed with double quotes, ready to go.
+ */
+P_EXPORT P_BOOL
+p_json_make_string( P_CHAR* s,
+        p_String* jstring,
+        const P_BOOL ascii_only );
+
 #ifdef __cplusplus
 }
 #endif
