@@ -37,8 +37,13 @@ extern "C" {
  *  \param c Unicode character number.
  *  \return 1 to 4, or 0 on error (invalid character number).
  */
-P_EXPORT P_INT8
-p_utf8_octetnum( const P_INT32 c );
+#define p_utf8_octetnum( c ) \
+        ( c >= 0xD800 && c <= 0xDFFF ? 0 : \
+        c >= 0x0 && c <= 0x7F ? 1 : \
+        c >= 0x80 && c <= 0x7FF ? 2 : \
+        c >= 0x800 && c <= 0xFFFF ? 3 : \
+        c >= 0x10000 && c <= 0x10FFFF ? 4 : \
+        0 )
 
 /**
  *  \brief Prepare string for an Unicode character.

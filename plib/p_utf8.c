@@ -18,6 +18,7 @@
 
 #include "p_utf8.h"
 
+#if 0
 P_INT8
 p_utf8_octetnum( const P_INT32 c )
 {
@@ -32,6 +33,7 @@ p_utf8_octetnum( const P_INT32 c )
         /* out of range */
         0;
 }
+#endif
 
 P_VOID
 p_utf8_octetprepare( P_CHAR* octets,
