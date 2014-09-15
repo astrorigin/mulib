@@ -181,6 +181,30 @@ p_vector_set( p_Vector* v,
     return dest;
 }
 
+P_BOOL
+p_vector_unset( p_Vector* v,
+        const P_ID index )
+{
+    P_PTR dest;
+
+    P_ASSERT( v )
+#ifdef NDEBUG
+    if ( !v )
+        return P_FALSE;
+#endif
+    P_TRACE( "-- VECTOR -- unset ("P_PTR_FMT") index ("P_ID_FMT")\n", v, index )
+
+    if ( index >= v->len )
+        return P_FALSE;
+    dest = v->data + ( index * v->unit );
+    if ( index != v->len - 1 )
+        memmove( dest, dest + v->unit, ( v->len - index - 1 ) * v->unit );
+    if ( !p_vector_reserve( v, v->len - 1 ))
+        return P_FALSE;
+    v->len -= 1;
+    return P_TRUE;
+}
+
 P_PTR
 p_vector_reserve( p_Vector* v,
         const P_SZ len )

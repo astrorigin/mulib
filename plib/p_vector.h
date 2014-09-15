@@ -133,6 +133,16 @@ p_vector_set( p_Vector* v,
         const P_PTR value );
 
 /**
+ *  \brief Unset (discard) an element in the vector.
+ *  \param v The vector (not NULL).
+ *  \param index Index of element to discard.
+ *  \return P_TRUE on success, P_FALSE on error or if index is out of range.
+ */
+P_EXPORT P_BOOL
+p_vector_unset( p_Vector* v,
+        const P_ID index );
+
+/**
  *  \brief Reserve space for elements.
  *  \param v The vector (not null).
  *  \param len Number of elements to accept.
