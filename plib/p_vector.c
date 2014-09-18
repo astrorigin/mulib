@@ -252,6 +252,30 @@ p_vector_append( p_Vector* v,
     return P_TRUE;
 }
 
+P_BOOL
+p_vector_prepend( p_Vector* v,
+        const P_PTR ptr,
+        const P_SZ len )
+{
+    P_ASSERT( v )
+    P_ASSERT( ptr )
+#ifdef NDEBUG
+    if ( !v || !ptr )
+        return P_FALSE;
+#endif
+    P_TRACE( "-- VECTOR -- prepend ("P_PTR_FMT")\n", v )
+
+    if ( len == 0 )
+        return P_TRUE;
+    if ( !p_vector_reserve( v, v->len + len ))
+        return P_FALSE;
+    memmove( v->data + ( len * v->unit ), v->data, v->len * v->unit );
+    memcpy( v->data, ptr, len * v->unit );
+    v->len += len;
+    P_ASSERT( v->len * v->unit <= v->capacity )
+    return P_TRUE;
+}
+
 P_VOID
 p_vector_traverse( p_Vector* v,
         P_VOID (*traverse_fn)( P_PTR ) )

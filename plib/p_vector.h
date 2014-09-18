@@ -165,6 +165,18 @@ p_vector_append( p_Vector* v,
         const P_SZ len );
 
 /**
+ *  \brief Prepend some data to the vector.
+ *  \param v The vector.
+ *  \param ptr The data.
+ *  \param len Number of elements to prepend.
+ *  \return P_TRUE, or P_FALSE on error.
+ */
+P_EXPORT P_BOOL
+p_vector_prepend( p_Vector* v,
+        const P_PTR ptr,
+        const P_SZ len );
+
+/**
  *  \brief Sort a vector.
  */
 #define p_vector_qsort( v, compar_fn ) \
