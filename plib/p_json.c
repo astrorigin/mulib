@@ -628,8 +628,8 @@ p_json_scan_number( P_CHAR* s,
 }
 
 P_BOOL
-p_json_make_string( P_CHAR* s,
-        p_String* jstring,
+p_json_make_string( p_String* jstring,
+        P_CHAR* s,
         const P_BOOL ascii_only )
 {
     P_CHAR buf[5];

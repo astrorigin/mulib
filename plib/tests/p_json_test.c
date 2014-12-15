@@ -58,10 +58,10 @@ p_json_test( P_VOID )
 
     P_ASSERT( p_string_init( &jstring, NULL ))
 
-    P_ASSERT( p_json_make_string( "Hello \"World\"", &jstring, P_FALSE ))
+    P_ASSERT( p_json_make_string( &jstring, "Hello \"World\"", P_FALSE ))
     P_ASSERT( !strcmp( (P_CHAR*)jstring.data, "\"Hello \\\"World\\\"\"" ))
 
-    P_ASSERT( p_json_make_string( "Hello \"ASCïï\"", &jstring, P_TRUE ))
+    P_ASSERT( p_json_make_string( &jstring, "Hello \"ASCïï\"", P_TRUE ))
     P_ASSERT( !strcmp( (P_CHAR*)jstring.data, "\"Hello \\\"ASC\\u00EF\\u00EF\\\"\"" ))
 
     p_string_fini( &jstring );
