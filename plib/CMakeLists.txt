@@ -45,6 +45,7 @@ set( INC
     p_memlist.h
     p_mempool.h
     p_mutex.h
+    p_regmatch.h
     p_shell.h
     p_sllist.h
     p_string.h
@@ -65,6 +66,7 @@ set( SRC
     p_llabs.c
     p_memlist.c
     p_mempool.c
+    p_regmatch.c
     p_shell.c
     p_sllist.c
     p_string.c
