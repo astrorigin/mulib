@@ -31,6 +31,12 @@ if ( P_NO_MEMPOOL )
     add_definitions( -DP_NO_MEMPOOL )
 endif()
 
+find_package( PostgreSQL MODULE )
+if ( PostgreSQL_FOUND )
+    add_definitions( -DP_POSTGRES )
+    include_directories( ${PostgreSQL_INCLUDE_DIRS} )
+endif()
+
 set( INC
     p_btree.h
     p_chrono.h
@@ -45,6 +51,7 @@ set( INC
     p_memlist.h
     p_mempool.h
     p_mutex.h
+    p_postgres.h
     p_regmatch.h
     p_shell.h
     p_sllist.h
@@ -66,6 +73,7 @@ set( SRC
     p_llabs.c
     p_memlist.c
     p_mempool.c
+    #p_postgres.c
     p_regmatch.c
     p_shell.c
     p_sllist.c
@@ -80,9 +88,17 @@ if ( NOT P_FCGI_STDIO )
     if ( P_MAKE_STATIC )
         add_library( plib_s STATIC ${SRC} )
         install( TARGETS plib_s LIBRARY DESTINATION lib )
+        if ( PostgreSQL_FOUND )
+            add_library( plib_postgres_s STATIC p_postgres.c )
+            install( TARGETS plib_postgres_s LIBRARY DESTINATION lib )
+        endif()
     endif()
     add_library( plib SHARED ${SRC} )
     install( TARGETS plib LIBRARY DESTINATION lib )
+    if ( PostgreSQL_FOUND )
+        add_library( plib_postgres SHARED p_postgres.c )
+        install( TARGETS plib_postgres LIBRARY DESTINATION lib )
+    endif()
     add_executable( p_i18n p_i18n.c )
     target_link_libraries( p_i18n plib -pthread )
     add_executable( p_l10n p_l10n.c )
