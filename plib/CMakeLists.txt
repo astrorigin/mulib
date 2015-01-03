@@ -1,4 +1,4 @@
-# plib:CMakeLists.txt
+# Plib:plib/CMakeLists.txt
 
 cmake_minimum_required( VERSION 2.8 )
 
@@ -33,7 +33,6 @@ endif()
 
 find_package( PostgreSQL MODULE )
 if ( PostgreSQL_FOUND )
-    add_definitions( -DP_POSTGRES )
     include_directories( ${PostgreSQL_INCLUDE_DIRS} )
 endif()
 
@@ -55,6 +54,7 @@ set( INC
     p_regmatch.h
     p_shell.h
     p_sllist.h
+    p_strdup.h
     p_string.h
     p_strnstr.h
     p_utf8.h
@@ -77,6 +77,7 @@ set( SRC
     p_regmatch.c
     p_shell.c
     p_sllist.c
+    p_strdup.c
     p_string.c
     p_strnstr.c
     p_utf8.c

@@ -16,10 +16,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifdef P_POSTGRES
-
 #include "p_postgres.h"
-#include <stdarg.h>
+#include "p_strdup.h"
 
 char*
 _p_pg_conninfo = NULL;
@@ -29,20 +27,6 @@ _p_pg_cnx = NULL;
 
 char*
 _p_pg_err = NULL;
-
-/* Not in C89 */
-static char*
-strdup( const char* s )
-{
-    char* dup;
-    size_t sz;
-    assert( s );
-    sz = strlen( s ) + 1;
-    if ( !( dup = malloc( sz )))
-        return NULL;
-    memcpy( dup, s, sz );
-    return dup;
-}
 
 static void
 _p_pgsql_error( const char* msg )
@@ -369,5 +353,4 @@ p_pgsql_exec2( const char* sql,
     return res;
 }
 
-#endif /* P_POSTGRES */
 /* vi: set fenc=utf-8 ff=unix et sw=4 ts=4 sts=4 : */
