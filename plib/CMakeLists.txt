@@ -1,8 +1,12 @@
 # Plib:plib/CMakeLists.txt
 
-cmake_minimum_required( VERSION 2.8 )
-
-project( PLIB )
+if ( CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT )
+    if ( WIN32 )
+        set ( CMAKE_INSTALL_PREFIX "C:\\plib" )
+    else()
+        set ( CMAKE_INSTALL_PREFIX "/usr/local" )
+    endif()
+endif()
 
 add_definitions( -ansi -Wall -Wextra -Werror -pthread )
 
