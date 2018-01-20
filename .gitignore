@@ -1,8 +1,9 @@
-# Plib gitignore
+# mulib .gitignore
 
 # cmake
 bld*
 build*
+tmp*
 
 # vi
 *.swp
@@ -17,4 +18,7 @@ build*
 *.bak
 *.orig
 
-# vi: set fenc=utf-8 ff=unix et sw=4 ts=4 sts=4 :
+*.out
+*.tmp
+
+# end.
